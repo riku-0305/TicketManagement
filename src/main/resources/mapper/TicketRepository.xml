@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CAP_FIT.TicketManagement.Repository.TicketRepository">
+
+  <select id="userList" resultType="CAP_FIT.TicketManagement.Data.User">
+    SELECT * FROM user
+  </select>
+
+  <select id="nominationTicketList" resultType="CAP_FIT.TicketManagement.Data.NominationTicket">
+    SELECT * FROM nomination_ticket
+  </select>
+
+  <select id="stretchTicketList" resultType="CAP_FIT.TicketManagement.Data.StretchTicket">
+    SELECT * FROM stretch_ticket
+  </select>
+
+</mapper>
