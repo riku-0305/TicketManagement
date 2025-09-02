@@ -27,5 +27,4 @@ class TicketControllerTest {
 
     Mockito.verify(converterService, Mockito.times(1)).userInfoList();
   }
-
 }
