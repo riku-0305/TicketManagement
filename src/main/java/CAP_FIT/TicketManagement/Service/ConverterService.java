@@ -23,7 +23,7 @@ public class ConverterService {
   private TicketConverter ticketConverter;
 
   @Autowired
-  public void TicketUser(NominationTicketService nominationTicketService, TicketUserService ticketUserService, StretchTicketService stretchTicketService, TicketConverter ticketConverter) {
+  public ConverterService(TicketUserService ticketUserService,NominationTicketService nominationTicketService, StretchTicketService stretchTicketService, TicketConverter ticketConverter) {
     this.ticketUserService = ticketUserService;
     this.nominationTicketService = nominationTicketService;
     this.stretchTicketService = stretchTicketService;
@@ -34,5 +34,4 @@ public class ConverterService {
   public List<UserInfo> userInfoList() {
     return ticketConverter.convertUserInfoList(ticketUserService.searchUserList(), nominationTicketService.searchNominationTicketList(), stretchTicketService.searchStretchTicketList());
   }
-
 }
