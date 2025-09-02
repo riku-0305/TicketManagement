@@ -14,4 +14,7 @@ public class User {
   private Integer membershipFee;
   private Date admissionDay;
 
+  public User(String id) {
+    this.id = id;
+  }
 }
