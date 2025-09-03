@@ -3,7 +3,7 @@
 <mapper namespace="CAP_FIT.TicketManagement.Repository.TicketRepository">
 
   <select id="userList" resultType="CAP_FIT.TicketManagement.Data.User">
-    SELECT * FROM user
+    SELECT * FROM gym_user
   </select>
 
   <select id="nominationTicketList" resultType="CAP_FIT.TicketManagement.Data.NominationTicket">
