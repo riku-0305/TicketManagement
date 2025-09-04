@@ -7,15 +7,19 @@ CREATE TABLE gym_user (
 );
 
 CREATE TABLE nomination_ticket (
-  id varchar(20) NOT NULL PRIMARY KEY,
+  ticket_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id varchar(20) NOT NULL UNIQUE,
   remaining int NOT NULL,
   buy_day date NOT NULL,
-  user_name varchar(30) NOT NULL
+  user_name varchar(30) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES gym_user (id)
 );
 
 CREATE TABLE stretch_ticket (
-  id varchar(20) NOT NULL PRIMARY KEY,
+  ticket_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id varchar(20) NOT NULL UNIQUE,
   remaining int NOT NULL,
   buy_day date NOT NULL,
-  user_name varchar(30) NOT NULL
+  user_name varchar(30) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES gym_user (id)
 );

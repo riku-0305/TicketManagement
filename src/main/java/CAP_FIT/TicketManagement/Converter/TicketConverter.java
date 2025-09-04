@@ -21,10 +21,10 @@ public class TicketConverter {
       userInfo.setUser(user);
 
       nominationTicketList.stream()
-          .filter(nominationTicket -> user.getId().equals(nominationTicket.getId()))
+          .filter(nominationTicket -> user.getId().equals(nominationTicket.getUserId()))
           .forEach(userInfo::setNominationTicket);
 
-      stretchTicketList.stream().filter(stretchTicket -> user.getId().equals(stretchTicket.getId()))
+      stretchTicketList.stream().filter(stretchTicket -> user.getId().equals(stretchTicket.getUserId()))
           .forEach(userInfo::setStretchTicket);
 
       userInfoList.add(userInfo);
