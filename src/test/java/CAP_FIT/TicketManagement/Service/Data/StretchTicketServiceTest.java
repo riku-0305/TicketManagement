@@ -25,7 +25,7 @@ class StretchTicketServiceTest {
   }
 
   @Test
-  void リポジトリから会員のストレッチ回数券の全件取得が可能() {
+  void リポジトリから会員のストレッチ回数券の全件取得が可能なメソッドを呼び出せる() {
     List<StretchTicket> stretchTicketList = new ArrayList<>();
 
     Mockito.when(repository.stretchTicketList()).thenReturn(stretchTicketList);

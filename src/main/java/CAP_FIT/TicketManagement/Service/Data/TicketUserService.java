@@ -20,4 +20,8 @@ public class TicketUserService {
   public List<User> searchUserList() {
     return ticketRepository.userList();
   }
+
+  public List<User> searchSelectUserList(String name) {
+   return ticketRepository.selectUserList(name);
+  }
 }

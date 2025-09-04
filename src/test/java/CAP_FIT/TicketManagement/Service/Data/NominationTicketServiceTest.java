@@ -25,7 +25,7 @@ class NominationTicketServiceTest {
   }
 
   @Test
-  void リポジトリから会員の指名回数券の全件取得が可能() {
+  void リポジトリから会員の指名回数券の全件取得が可能なメソッドを呼び出せる() {
     List<NominationTicket> nominationTicketList = new ArrayList<>();
 
     Mockito.when(ticketRepository.nominationTicketList()).thenReturn(nominationTicketList);

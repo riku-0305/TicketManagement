@@ -4,6 +4,7 @@ import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ class TicketUserServiceTest {
   }
 
   @Test
-  void リポジトリから会員情報の全件取得が可能() {
+  void リポジトリから会員情報の全件取得ができるメソッドを呼び出せる() {
     List<User> userList = new ArrayList<>();
 
     Mockito.when(ticketRepository.userList()).thenReturn(userList);
@@ -33,5 +34,19 @@ class TicketUserServiceTest {
     sut.searchUserList();
 
     Mockito.verify(ticketRepository,Mockito.times(1)).userList();
+  }
+
+  @Test
+  void リポジトリから名前に紐づく会員を取得できるメソッドを呼び出せる() {
+    String name = "テスト";
+    List<User> userList = new ArrayList<>();
+
+    Mockito.when(ticketRepository.selectUserList(name)).thenReturn(userList);
+
+    List<User> actual = sut.searchSelectUserList(name);
+
+    Mockito.verify(ticketRepository,Mockito.times(1)).selectUserList(name);
+
+    Assertions.assertEquals(actual,userList);
   }
 }

@@ -42,7 +42,7 @@ class ConverterServiceTest {
   }
 
   @Test
-  void データパッケージの各サービスクラスとチケットコンバーターを呼び出せる() {
+  void データパッケージの各サービスクラスの全件取得とチケットコンバーターを呼び出せる() {
     List<User> userList = new ArrayList<>();
     List<NominationTicket> nominationTicketList = new ArrayList<>();
     List<StretchTicket> stretchTicketList = new ArrayList<>();
@@ -60,4 +60,25 @@ class ConverterServiceTest {
     Mockito.verify(stretchTicketService,Mockito.times(1)).searchStretchTicketList();
     Mockito.verify(ticketConverter,Mockito.times(1)).convertUserInfoList(userList,nominationTicketList,stretchTicketList);
   }
-}
+
+  @Test
+  void チケットユーザーサービスのみ名前に紐づく会員の取得ができるメソッドを呼び出せて他のサービスクラスの全件取得とチケットコンバーターを呼び出せる() {
+    String name = "テスト";
+    List<User> userList = new ArrayList<>();
+    List<NominationTicket> nominationTicketList = new ArrayList<>();
+    List<StretchTicket> stretchTicketList = new ArrayList<>();
+    List<UserInfo> userInfoList = new ArrayList<>();
+
+    Mockito.when(ticketUserService.searchSelectUserList(name)).thenReturn(userList);
+    Mockito.when(nominationTicketService.searchNominationTicketList()).thenReturn(nominationTicketList);
+    Mockito.when(stretchTicketService.searchStretchTicketList()).thenReturn(stretchTicketList);
+    Mockito.when(ticketConverter.convertUserInfoList(userList,nominationTicketList,stretchTicketList)).thenReturn(userInfoList);
+
+    sut.selectUserInfo(name);
+
+    Mockito.verify(ticketUserService,Mockito.times(1)).searchSelectUserList(name);
+    Mockito.verify(nominationTicketService,Mockito.times(1)).searchNominationTicketList();
+    Mockito.verify(stretchTicketService,Mockito.times(1)).searchStretchTicketList();
+    Mockito.verify(ticketConverter,Mockito.times(1)).convertUserInfoList(userList,nominationTicketList,stretchTicketList);
+   }
+  }

@@ -34,4 +34,8 @@ public class ConverterService {
   public List<UserInfo> userInfoList() {
     return ticketConverter.convertUserInfoList(ticketUserService.searchUserList(), nominationTicketService.searchNominationTicketList(), stretchTicketService.searchStretchTicketList());
   }
+
+  public List<UserInfo> selectUserInfo(String name) {
+    return ticketConverter.convertUserInfoList(ticketUserService.searchSelectUserList(name),nominationTicketService.searchNominationTicketList(),stretchTicketService.searchStretchTicketList());
+  }
 }
