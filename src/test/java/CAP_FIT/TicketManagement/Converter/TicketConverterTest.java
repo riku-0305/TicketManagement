@@ -43,8 +43,8 @@ class TicketConverterTest {
     Assertions.assertEquals(1,actual.size());
 
     Assertions.assertEquals(user.getId(),actual.getFirst().getUser().getId());
-    Assertions.assertEquals(nominationTicket.getId(),actual.getFirst().getNominationTicket().getId());
-    Assertions.assertEquals(stretchTicket.getId(),actual.getFirst().getStretchTicket().getId());
+    Assertions.assertEquals(nominationTicket.getUserId(),actual.getFirst().getNominationTicket().getUserId());
+    Assertions.assertEquals(stretchTicket.getUserId(),actual.getFirst().getStretchTicket().getUserId());
   }
 
   @Test

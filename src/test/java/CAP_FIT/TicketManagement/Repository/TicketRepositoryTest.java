@@ -35,4 +35,12 @@ class TicketRepositoryTest {
     Assertions.assertThat(actual.size()).isEqualTo(2);
   }
 
+  @Test
+  void 名前を指定した会員の検索が可能() {
+    String name = "テスト";
+    List<User> actual = sut.selectUserList(name);
+
+    Assertions.assertThat(actual.size()).isEqualTo(1);
+    Assertions.assertThat(actual.getFirst().getName()).isEqualTo(name);
+  }
 }
