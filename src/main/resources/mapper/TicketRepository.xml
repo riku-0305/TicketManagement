@@ -14,4 +14,8 @@
     SELECT * FROM stretch_ticket
   </select>
 
+  <select id="selectUserList" resultType="CAP_FIT.TicketManagement.Data.User">
+    SELECT * FROM gym_user WHERE name = #{name}
+  </select>
+
 </mapper>
