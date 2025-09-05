@@ -2,6 +2,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 
 import CAP_FIT.TicketManagement.Data.User;
+import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class TicketUserService {
   }
 
   public List<User> searchSelectUserList(String name) {
-   return ticketRepository.selectUserList(name);
+    List<User> nameSelectUserList = ticketRepository.selectUserList(name);
+
+    if(nameSelectUserList.isEmpty()) {
+      throw new UserNotFoundException(name + "さんは登録されていません");
+    }
+   return nameSelectUserList;
   }
 }

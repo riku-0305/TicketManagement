@@ -39,7 +39,9 @@ class TicketUserServiceTest {
   @Test
   void リポジトリから名前に紐づく会員を取得できるメソッドを呼び出せる() {
     String name = "テスト";
+
     List<User> userList = new ArrayList<>();
+    userList.add(new User("090-1234-5678","テスト"));
 
     Mockito.when(ticketRepository.selectUserList(name)).thenReturn(userList);
 

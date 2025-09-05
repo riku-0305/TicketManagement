@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import java.util.Date;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
 
   @Pattern(regexp = "^0[789]0-?\\d{4}-?\\d{4}$", message = "ハイフン付きで入力ぢてください")
@@ -31,4 +33,7 @@ public class User {
   public User(String id) {
     this.id = id;
   }
+  public User(String id, String name) {
+    this.id = id;
+    this.name = name;}
 }
