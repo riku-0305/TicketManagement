@@ -23,10 +23,11 @@ public class TicketUserService {
   }
 
   public List<User> searchSelectUserList(String name) {
+    List<User> nameSelectUserList = ticketRepository.selectUserList(name);
 
-    if(ticketRepository.selectUserList(name).isEmpty()) {
+    if(nameSelectUserList.isEmpty()) {
       throw new UserNotFoundException(name + "さんは登録されていません");
     }
-   return ticketRepository.selectUserList(name);
+   return nameSelectUserList;
   }
 }
