@@ -2,12 +2,13 @@ package CAP_FIT.TicketManagement.Controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.http.MediaType;
 
-import CAP_FIT.TicketManagement.Converter.TicketConverter;
+import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Service.ConverterService;
 import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
-import java.util.ArrayList;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ class TicketControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private ObjectMapper objectMapper;
 
   @MockitoBean
   private ConverterService converterService;
@@ -44,5 +48,24 @@ class TicketControllerTest {
         .andExpect(status().isOk());
 
     Mockito.verify(converterService, Mockito.times(1)).selectUserInfo(name);
+  }
+
+  @Test
+  void 会員登録メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
+    String massage = "会員登録が完了しました";
+    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1000, LocalDate.of(2025,9,10));
+
+    Mockito.doNothing().when(ticketUserService).newInsertUser(user);
+
+    String jsonRequest = objectMapper.writeValueAsString(user);
+
+    mockMvc.perform(post("/newUser")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(ticketUserService,Mockito.times(1)).newInsertUser(Mockito.any(User.class));
   }
 }

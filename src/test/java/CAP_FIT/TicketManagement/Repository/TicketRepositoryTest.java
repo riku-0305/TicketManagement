@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Data.StretchTicket;
 import CAP_FIT.TicketManagement.Data.User;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.h2.store.Data;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +45,16 @@ class TicketRepositoryTest {
 
     Assertions.assertThat(actual.size()).isEqualTo(1);
     Assertions.assertThat(actual.getFirst().getName()).isEqualTo(name);
+  }
+
+  @Test
+  void 会員の登録が可能() {
+    User user = new User("070-1234-5678","テスト3","test3@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    sut.insertUser(user);
+
+    List<User> actual = sut.userList();
+
+    Assertions.assertThat(actual.size()).isEqualTo(3);
   }
 }

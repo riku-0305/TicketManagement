@@ -3,6 +3,7 @@ package CAP_FIT.TicketManagement.Data;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class StretchTicket {
   private Integer remaining;
 
   @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "日付はyyyy-mm-ddの形式で入力してください")
-  private Date buyDay;
+  private LocalDate buyDay;
 
   @Pattern(regexp = "^[ァ-ヶー]+$", message = "カタカナのみ入力できます")
   private String userName;

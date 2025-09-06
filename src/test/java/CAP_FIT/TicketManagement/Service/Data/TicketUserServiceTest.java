@@ -2,6 +2,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -50,5 +51,17 @@ class TicketUserServiceTest {
     Mockito.verify(ticketRepository,Mockito.times(1)).selectUserList(name);
 
     Assertions.assertEquals(actual,userList);
+  }
+
+
+  @Test
+  void リポジトリクラスから会員登録メソッドが呼び出せる() {
+    User user = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    Mockito.doNothing().when(ticketRepository).insertUser(user);
+
+    sut.newInsertUser(user);
+
+    Mockito.verify(ticketRepository,Mockito.times(1)).insertUser(user);
   }
 }
