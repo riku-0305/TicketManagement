@@ -1,21 +1,31 @@
 package CAP_FIT.TicketManagement.Controller;
 
+import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
 import CAP_FIT.TicketManagement.Service.ConverterService;
+import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Validated
 public class TicketController {
 
   private final ConverterService converterService;
+  private final TicketUserService ticketUserService;
 
   @Autowired
-  public TicketController(ConverterService converterService) {
+  public TicketController(ConverterService converterService, TicketUserService ticketUserService) {
     this.converterService = converterService;
+    this.ticketUserService = ticketUserService;
   }
 
   @GetMapping("/userList")
@@ -25,5 +35,11 @@ public class TicketController {
       return converterService.selectUserInfo(name);
     }
     return converterService.userInfoList();
+  }
+
+  @PostMapping("/newUser")
+  public ResponseEntity<String> newUser(@RequestBody @Valid User user) {
+    ticketUserService.newInsertUser(user);
+    return ResponseEntity.ok("会員登録が完了しました");
   }
 }

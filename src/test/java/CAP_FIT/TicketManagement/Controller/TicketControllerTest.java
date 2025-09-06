@@ -3,8 +3,11 @@ package CAP_FIT.TicketManagement.Controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import CAP_FIT.TicketManagement.Converter.TicketConverter;
 import CAP_FIT.TicketManagement.Service.ConverterService;
+import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
 import java.util.ArrayList;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ class TicketControllerTest {
 
   @MockitoBean
   private ConverterService converterService;
+
+  @MockitoBean
+  private TicketUserService ticketUserService;
 
   @Test
   void 会員と回数券の情報全てをコンバーターサービスから呼び出せる() throws Exception {
