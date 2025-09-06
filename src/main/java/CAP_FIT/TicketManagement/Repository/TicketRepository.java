@@ -16,4 +16,6 @@ public interface TicketRepository {
   List<StretchTicket> stretchTicketList();
 
   List<User> selectUserList(String name);
+
+  void insertUser(User user);
 }

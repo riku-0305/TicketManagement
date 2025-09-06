@@ -7,6 +7,7 @@ import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TicketUserService {
@@ -29,5 +30,10 @@ public class TicketUserService {
       throw new UserNotFoundException(name + "さんは登録されていません");
     }
    return nameSelectUserList;
+  }
+
+  @Transactional
+  public void newInsertUser(User user) {
+    ticketRepository.insertUser(user);
   }
 }
