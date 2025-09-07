@@ -1,6 +1,7 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.User;
+import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,6 +52,19 @@ class TicketUserServiceTest {
     Mockito.verify(ticketRepository,Mockito.times(1)).selectUserList(name);
 
     Assertions.assertEquals(actual,userList);
+  }
+
+  @Test
+  void リポジトリから名前に紐づく会員が取得できなかった際に例外を返す() {
+    String name = "テスト";
+
+    Mockito.when(ticketRepository.selectUserList(name)).thenReturn(new ArrayList<>());
+
+    UserNotFoundException actual = Assertions.assertThrows(UserNotFoundException.class, () -> {
+      sut.searchSelectUserList(name);
+    });
+
+    Assertions.assertEquals(name + "さんは登録されていません", actual.getMessage());
   }
 
 
