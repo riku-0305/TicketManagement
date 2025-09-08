@@ -1,6 +1,7 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.NominationTicket;
+import CAP_FIT.TicketManagement.Judgment.TicketJudgment;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,14 @@ class NominationTicketServiceTest {
   @Mock
   private TicketRepository ticketRepository;
 
+  @Mock
+  private TicketJudgment ticketJudgment;
+
   private NominationTicketService sut;
 
   @BeforeEach
   void before() {
-    sut = new NominationTicketService(ticketRepository);
+    sut = new NominationTicketService(ticketRepository,ticketJudgment);
   }
 
   @Test

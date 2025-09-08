@@ -23,4 +23,9 @@
    VALUES (#{id}, #{name}, #{emailAddress}, #{membershipFee}, #{admissionDay});
   </insert>
 
+  <insert id="insertNominationTicket" parameterType="CAP_FIT.TicketManagement.Data.NominationTicket" useGeneratedKeys="true" keyProperty="ticketNumber">
+    INSERT INTO nomination_ticket (user_id, remaining, buy_day, user_name)
+    VALUES (#{userId}, #{remaining}, #{buyDay}, #{userName});
+  </insert>
+
 </mapper>

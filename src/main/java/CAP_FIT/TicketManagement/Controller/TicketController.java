@@ -1,8 +1,10 @@
 package CAP_FIT.TicketManagement.Controller;
 
+import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
 import CAP_FIT.TicketManagement.Service.ConverterService;
+import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
 import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -21,11 +23,13 @@ public class TicketController {
 
   private final ConverterService converterService;
   private final TicketUserService ticketUserService;
+  private final NominationTicketService nominationTicketService;
 
   @Autowired
-  public TicketController(ConverterService converterService, TicketUserService ticketUserService) {
+  public TicketController(ConverterService converterService, TicketUserService ticketUserService, NominationTicketService nominationTicketService) {
     this.converterService = converterService;
     this.ticketUserService = ticketUserService;
+    this.nominationTicketService = nominationTicketService;
   }
 
   @GetMapping("/userList")
@@ -41,5 +45,11 @@ public class TicketController {
   public ResponseEntity<String> newUser(@RequestBody @Valid User user) {
     ticketUserService.newInsertUser(user);
     return ResponseEntity.ok("会員登録が完了しました");
+  }
+
+  @PostMapping("/newNominationTicket")
+  public ResponseEntity<String> newNominationTicket(@RequestBody @Valid NominationTicket nominationTicket) {
+    nominationTicketService.newInsertNominationTicket(nominationTicket);
+    return ResponseEntity.ok("指名回数券の登録が完了しました");
   }
 }

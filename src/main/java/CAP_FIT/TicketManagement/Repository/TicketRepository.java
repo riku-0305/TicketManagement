@@ -18,4 +18,6 @@ public interface TicketRepository {
   List<User> selectUserList(String name);
 
   void insertUser(User user);
+
+  void insertNominationTicket(NominationTicket nominationTicket);
 }
