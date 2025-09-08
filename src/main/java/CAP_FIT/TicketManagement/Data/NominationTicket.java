@@ -33,4 +33,10 @@ public class NominationTicket {
   public NominationTicket(String userId) {
     this.userId = userId;
   }
+  public NominationTicket(String userId, Integer remaining, LocalDate buyDay, String userName) {
+    this.userId = userId;
+    this.remaining = remaining;
+    this.buyDay = buyDay;
+    this.userName = userName;
+  }
 }

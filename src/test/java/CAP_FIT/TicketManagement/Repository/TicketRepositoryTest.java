@@ -1,15 +1,11 @@
 package CAP_FIT.TicketManagement.Repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Data.StretchTicket;
 import CAP_FIT.TicketManagement.Data.User;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.h2.store.Data;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +16,11 @@ class TicketRepositoryTest {
   @Autowired
   private TicketRepository sut;
 
+
   @Test
   void 会員情報の全件検索が可能() {
     List<User> actual = sut.userList();
-    Assertions.assertThat(actual.size()).isEqualTo(2);
+    Assertions.assertThat(actual.size()).isEqualTo(3);
   }
 
   @Test
@@ -54,6 +51,17 @@ class TicketRepositoryTest {
     sut.insertUser(user);
 
     List<User> actual = sut.userList();
+
+    Assertions.assertThat(actual.size()).isEqualTo(4);
+  }
+
+  @Test
+  void 指名回数券の登録が可能() {
+    NominationTicket nominationTicket = new NominationTicket("090-1234-1234", 10, LocalDate.of(2025,9,1), "テスト3");
+
+    sut.insertNominationTicket(nominationTicket);
+
+    List<NominationTicket> actual = sut.nominationTicketList();
 
     Assertions.assertThat(actual.size()).isEqualTo(3);
   }
