@@ -47,4 +47,14 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+    jvmArgs '--add-opens', 'java.base/jdk.internal.misc=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/sun.security.x509=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.net=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.nio=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.io=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.security=ALL-UNNAMED'
+    jvmArgs '--add-opens', 'java.base/java.math=ALL-UNNAMED'
+    jvmArgs '-javaagent:' + configurations.testRuntimeClasspath.find { it.name.contains('byte-buddy-agent') }
 }

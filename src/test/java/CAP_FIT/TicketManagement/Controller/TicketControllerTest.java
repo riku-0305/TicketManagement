@@ -3,6 +3,7 @@ package CAP_FIT.TicketManagement.Controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
 import org.springframework.http.MediaType;
 
@@ -49,7 +50,7 @@ class TicketControllerTest {
     String name = "テスト";
 
     mockMvc.perform(get("/userList")
-            .param("name","テスト"))
+            .param("name", "テスト"))
         .andExpect(status().isOk());
 
     Mockito.verify(converterService, Mockito.times(1)).selectUserInfo(name);
@@ -58,19 +59,39 @@ class TicketControllerTest {
   @Test
   void 会員登録メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
     String massage = "会員登録が完了しました";
-    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1000, LocalDate.of(2025,9,10));
+    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1000,
+        LocalDate.of(2025, 9, 10));
 
     Mockito.doNothing().when(ticketUserService).newInsertUser(user);
 
     String jsonRequest = objectMapper.writeValueAsString(user);
 
     mockMvc.perform(post("/newUser")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(ticketUserService, Mockito.times(1)).newInsertUser(Mockito.any(User.class));
+  }
+
+  @Test
+  void 指名回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
+    String massage = "指名回数券の登録が完了しました";
+    NominationTicket nominationTicket = new NominationTicket("090-1234-5678", 10, LocalDate.of(2025,9,10), "テスト");
+
+    Mockito.doNothing().when(nominationTicketService).newInsertNominationTicket(nominationTicket);
+
+    String jsonRequest = objectMapper.writeValueAsString(nominationTicket);
+
+    mockMvc.perform(post("/newNominationTicket")
         .contentType(MediaType.APPLICATION_JSON)
         .content(jsonRequest))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
         .andExpect(content().string(massage));
 
-    Mockito.verify(ticketUserService,Mockito.times(1)).newInsertUser(Mockito.any(User.class));
+    Mockito.verify(nominationTicketService,Mockito.times(1)).newInsertNominationTicket(Mockito.any(NominationTicket.class));
   }
 }
