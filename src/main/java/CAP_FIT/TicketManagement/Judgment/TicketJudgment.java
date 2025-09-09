@@ -10,17 +10,21 @@ import org.springframework.stereotype.Component;
 public class TicketJudgment {
 
   public NominationTicket insertJudgmentNominationTicket(List<User> userList, NominationTicket nominationTicket) {
+    String nominationTicketUserId = nominationTicket.getUserId();
+    insertJudgmentTicket(userList, nominationTicketUserId);
+    return nominationTicket;
+  }
+
+  private void insertJudgmentTicket(List<User> userList, String insertTicketUserId) {
     List<String> userListId = userList.stream()
         .map(User::getId)
         .toList();
 
-    String nominationTicketUserId = nominationTicket.getUserId();
-
     for (String usersId : userListId) {
-      if (usersId.equals(nominationTicketUserId)) {
-        return nominationTicket;
+      if (usersId.equals(insertTicketUserId)) {
+        return;
       }
-    } throw new UserNotFoundException("会員ID " + nominationTicketUserId + " の会員は見つかりません");
+    } throw new UserNotFoundException("会員ID " + insertTicketUserId + " の会員は見つかりません");
   }
 }
 
