@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 
 @ExtendWith(MockitoExtension.class)
 class TicketUserServiceTest {
@@ -77,5 +78,22 @@ class TicketUserServiceTest {
     sut.newInsertUser(user);
 
     Mockito.verify(ticketRepository,Mockito.times(1)).insertUser(user);
+  }
+
+  @Test
+  void 会員登録時に既存の会員IDと重複していれば例外を返す() {
+    List<User> userList = new ArrayList<>();
+    userList.add(new User("090-1234-5678"));
+
+    User user = new User("090-1234-5678");
+
+    Mockito.when(ticketRepository.userList()).thenReturn(userList);
+
+    DuplicateKeyException actual = Assertions.assertThrows(DuplicateKeyException.class, () -> {
+      sut.newInsertUser(user);
+    });
+
+    Assertions.assertEquals("会員番号 " + user.getId() + " はすでに存在しています", actual.getMessage());
+
   }
 }
