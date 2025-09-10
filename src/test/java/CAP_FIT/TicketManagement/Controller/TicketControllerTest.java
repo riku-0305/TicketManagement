@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
+import CAP_FIT.TicketManagement.Service.Data.StretchTicketService;
 import org.springframework.http.MediaType;
 
 import CAP_FIT.TicketManagement.Data.User;
@@ -36,6 +37,9 @@ class TicketControllerTest {
 
   @MockitoBean
   private NominationTicketService nominationTicketService;
+
+  @MockitoBean
+  private StretchTicketService stretchTicketService;
 
   @Test
   void 会員と回数券の情報全てをコンバーターサービスから呼び出せる() throws Exception {
