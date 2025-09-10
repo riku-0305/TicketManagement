@@ -32,4 +32,10 @@ public class StretchTicket {
   public StretchTicket(String userId) {
     this.userId = userId;
   }
+  public StretchTicket(String userId, Integer remaining, LocalDate buyDay, String userName) {
+    this.userId = userId;
+    this.remaining = remaining;
+    this.buyDay = buyDay;
+    this.userName = userName;
+  }
 }

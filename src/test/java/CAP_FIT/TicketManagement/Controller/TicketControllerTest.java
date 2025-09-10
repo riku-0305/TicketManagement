@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import CAP_FIT.TicketManagement.Data.NominationTicket;
+import CAP_FIT.TicketManagement.Data.StretchTicket;
 import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
 import CAP_FIT.TicketManagement.Service.Data.StretchTicketService;
 import org.springframework.http.MediaType;
@@ -97,5 +98,25 @@ class TicketControllerTest {
         .andExpect(content().string(massage));
 
     Mockito.verify(nominationTicketService,Mockito.times(1)).newInsertNominationTicket(Mockito.any(NominationTicket.class));
+  }
+
+  @Test
+  void ストレッチ回数券登録メソッドをストレッチチケットサービスから呼び出せる() throws Exception {
+    String massage = "ストレッチ回数券の登録が完了しました";
+
+    StretchTicket stretchTicket = new StretchTicket("090-1234-5678", 10, LocalDate.of(2025,9,10), "テスト");
+
+    Mockito.doNothing().when(stretchTicketService).newInsertStretchTicket(stretchTicket);
+
+    String jsonRequest = objectMapper.writeValueAsString(stretchTicket);
+
+    mockMvc.perform(post("/newStretchTicket")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(stretchTicketService,Mockito.times(1)).newInsertStretchTicket(Mockito.any(StretchTicket.class));
   }
 }
