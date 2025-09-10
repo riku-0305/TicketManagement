@@ -1,6 +1,7 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.StretchTicket;
+import CAP_FIT.TicketManagement.Judgment.TicketJudgment;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,14 @@ class StretchTicketServiceTest {
   @Mock
   private TicketRepository repository;
 
+  @Mock
+  private TicketJudgment ticketJudgment;
+
   private StretchTicketService sut;
 
   @BeforeEach
   void before() {
-    sut = new StretchTicketService(repository);
+    sut = new StretchTicketService(repository, ticketJudgment);
   }
 
   @Test

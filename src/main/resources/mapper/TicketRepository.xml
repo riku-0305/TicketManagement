@@ -28,4 +28,9 @@
     VALUES (#{userId}, #{remaining}, #{buyDay}, #{userName});
   </insert>
 
+  <insert id="insertStretchTicket" parameterType="CAP_FIT.TicketManagement.Data.StretchTicket" useGeneratedKeys="true" keyProperty="ticketNumber">
+    INSERT INTO stretch_ticket (user_id, remaining, buy_day, user_name)
+    VALUES (#{userId}, #{remaining}, #{buyDay}, #{userName});
+  </insert>
+
 </mapper>
