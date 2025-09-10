@@ -1,6 +1,7 @@
 package CAP_FIT.TicketManagement.Judgment;
 
 import CAP_FIT.TicketManagement.Data.NominationTicket;
+import CAP_FIT.TicketManagement.Data.StretchTicket;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import java.util.List;
@@ -13,6 +14,12 @@ public class TicketJudgment {
     String nominationTicketUserId = nominationTicket.getUserId();
     insertJudgmentTicket(userList, nominationTicketUserId);
     return nominationTicket;
+  }
+
+  public StretchTicket insertJudgmentStretchTicket(List<User> userList, StretchTicket stretchTicket) {
+    String stretchTicketUserId = stretchTicket.getUserId();
+    insertJudgmentTicket(userList, stretchTicketUserId);
+    return stretchTicket;
   }
 
   private void insertJudgmentTicket(List<User> userList, String insertTicketUserId) {
