@@ -65,4 +65,15 @@ class TicketRepositoryTest {
 
     Assertions.assertThat(actual.size()).isEqualTo(3);
   }
+
+  @Test
+  void ストレッチ回数券の登録が可能() {
+    StretchTicket stretchTicket = new StretchTicket("090-1234-1234",10, LocalDate.of(2025,9,1), "テスト3");
+
+    sut.insertStretchTicket(stretchTicket);
+
+    List<StretchTicket> actual = sut.stretchTicketList();
+
+    Assertions.assertThat(actual.size()).isEqualTo(3);
+  }
 }
