@@ -33,4 +33,10 @@
     VALUES (#{userId}, #{remaining}, #{buyDay}, #{userName});
   </insert>
 
+  <update id="updateUser" parameterType="CAP_FIT.TicketManagement.Data.User">
+    UPDATE gym_user
+    SET name = #{name}, email_address = #{emailAddress}, membership_fee = #{membershipFee}, admission_day = #{admissionDay}
+    WHERE id = #{id}
+  </update>
+
 </mapper>
