@@ -7,6 +7,7 @@ import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Data.StretchTicket;
 import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
 import CAP_FIT.TicketManagement.Service.Data.StretchTicketService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.MediaType;
 
 import CAP_FIT.TicketManagement.Data.User;
@@ -118,5 +119,26 @@ class TicketControllerTest {
         .andExpect(content().string(massage));
 
     Mockito.verify(stretchTicketService,Mockito.times(1)).newInsertStretchTicket(Mockito.any(StretchTicket.class));
+  }
+
+  @Test
+  void 会員情報更新メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
+    String massage = "会員情報の更新が完了しました";
+
+    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 10000,
+        LocalDate.of(2025, 9, 10));
+
+    Mockito.doNothing().when(ticketUserService).searchUpdateUser(user);
+
+    String jsonRequest = objectMapper.writeValueAsString(user);
+
+    mockMvc.perform(put("/updateUser")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(ticketUserService, Mockito.times(1)).searchUpdateUser(Mockito.any(User.class));
   }
 }
