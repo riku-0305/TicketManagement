@@ -76,4 +76,19 @@ class TicketRepositoryTest {
 
     Assertions.assertThat(actual.size()).isEqualTo(3);
   }
+
+  @Test
+  void 会員情報の更新が可能() {
+    User updateUser = new User("090-1234-5678","テストさん","testsan@gmail.com", 15000, LocalDate.of(2025,9,30));
+
+    List<User> oldUserList = sut.userList();
+
+    sut.updateUser(updateUser);
+
+    List<User> newUserList = sut.userList();
+
+    Assertions.assertThat(oldUserList.size()).isEqualTo(newUserList.size());
+    Assertions.assertThat(oldUserList.getFirst().getId()).isEqualTo(newUserList.getFirst().getId());
+    Assertions.assertThat("テストさん").isEqualTo(newUserList.getFirst().getName());
+  }
 }

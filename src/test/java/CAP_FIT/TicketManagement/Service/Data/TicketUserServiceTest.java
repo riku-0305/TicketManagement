@@ -94,6 +94,36 @@ class TicketUserServiceTest {
     });
 
     Assertions.assertEquals("会員番号 " + user.getId() + " はすでに存在しています", actual.getMessage());
+  }
 
+  @Test
+  void リポジトリから会員更新メソッドが呼び出せる() {
+    List<User> userList = new ArrayList<>();
+    userList.add(new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10)));
+
+    User user = new User("090-1234-5678", "テスト1","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    Mockito.when(ticketRepository.userList()).thenReturn(userList);
+
+    sut.searchUpdateUser(user);
+
+    Mockito.verify(ticketRepository, Mockito.times(1)).userList();
+    Mockito.verify(ticketRepository, Mockito.times(1)).updateUser(user);
+  }
+
+  @Test
+  void 会員情報更新時に存在しないIDの場合は例外を返す() {
+    List<User> userList = new ArrayList<>();
+    userList.add(new User("080-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10)));
+
+    User user = new User("090-1234-5678", "テスト1","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    Mockito.when(ticketRepository.userList()).thenReturn(userList);
+
+    UserNotFoundException actual = Assertions.assertThrows(UserNotFoundException.class, () -> {
+      sut.searchUpdateUser(user);
+    });
+
+   Assertions.assertEquals("会員番号　" + user.getId() + " は存在しません", actual.getMessage());
   }
 }

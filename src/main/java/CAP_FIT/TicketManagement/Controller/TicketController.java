@@ -68,6 +68,6 @@ public class TicketController {
   @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody @Valid User user) {
      ticketUserService.searchUpdateUser(user);
-     return ResponseEntity.ok("会員情報の変更が完了しました");
+     return ResponseEntity.ok("会員情報の更新が完了しました");
   }
 }
