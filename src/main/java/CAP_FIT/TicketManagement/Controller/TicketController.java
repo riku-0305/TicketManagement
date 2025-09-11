@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,5 +63,11 @@ public class TicketController {
   public ResponseEntity<String> newStretchTicket(@RequestBody @Valid StretchTicket stretchTicket) {
     stretchTicketService.newInsertStretchTicket(stretchTicket);
     return ResponseEntity.ok("ストレッチ回数券の登録が完了しました");
+  }
+
+  @PutMapping("/updateUser")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid User user) {
+     ticketUserService.searchUpdateUser(user);
+     return ResponseEntity.ok("会員情報の変更が完了しました");
   }
 }

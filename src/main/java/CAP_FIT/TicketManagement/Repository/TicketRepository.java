@@ -22,4 +22,7 @@ public interface TicketRepository {
   void insertNominationTicket(NominationTicket nominationTicket);
 
   void insertStretchTicket(StretchTicket stretchTicket);
+
+  void updateUser(User user);
+
 }

@@ -42,6 +42,19 @@ public class TicketUserService {
       if (users.getId().equals(user.getId())) {
         throw new DuplicateKeyException("会員番号 " + user.getId() + " はすでに存在しています");
       }
-    } ticketRepository.insertUser(user);
+    }
+    ticketRepository.insertUser(user);
+  }
+
+  @Transactional
+  public void searchUpdateUser(User user) {
+    List<User> userList = ticketRepository.userList();
+    for (User users : userList) {
+      if (users.getId().equals(user.getId())) {
+        ticketRepository.updateUser(user);
+        return;
+      }
+    }
+    throw new UserNotFoundException("会員番号　" + user.getId() + " は存在しません");
   }
 }
