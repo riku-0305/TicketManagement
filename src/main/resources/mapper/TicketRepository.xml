@@ -39,4 +39,10 @@
     WHERE id = #{id}
   </update>
 
+  <update id="updateNominationTicket" parameterType="CAP_FIT.TicketManagement.Data.NominationTicket">
+    UPDATE nomination_ticket
+    SET remaining = #{remaining}, buy_day = #{buyDay}, user_name = #{userName}
+    WHERE user_id = #{userId}
+  </update>
+
 </mapper>
