@@ -25,4 +25,6 @@ public interface TicketRepository {
 
   void updateUser(User user);
 
+  int updateNominationTicket(NominationTicket nominationTicket);
+
 }

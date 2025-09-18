@@ -70,4 +70,10 @@ public class TicketController {
      ticketUserService.searchUpdateUser(user);
      return ResponseEntity.ok("会員情報の更新が完了しました");
   }
+
+  @PutMapping("/updateNominationTicket")
+   public ResponseEntity<String> updateNominationTicket(@RequestBody @Valid NominationTicket nominationTicket) {
+    nominationTicketService.searchUpdateNominationTicket(nominationTicket);
+    return ResponseEntity.ok("指名回数券の更新が完了しました");
+  }
 }

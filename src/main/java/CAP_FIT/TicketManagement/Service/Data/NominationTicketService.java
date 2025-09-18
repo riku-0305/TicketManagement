@@ -2,6 +2,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.NominationTicket;
 import CAP_FIT.TicketManagement.Data.User;
+import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Judgment.TicketJudgment;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
@@ -30,5 +31,14 @@ public class NominationTicketService {
     List<User> userList = ticketRepository.userList();
     NominationTicket resultNominationTicket = ticketJudgment.insertJudgmentNominationTicket(userList,nominationTicket);
     ticketRepository.insertNominationTicket(resultNominationTicket);
+  }
+
+  @Transactional
+  public void searchUpdateNominationTicket(NominationTicket nominationTicket) {
+    int nominationTicketSheet = ticketRepository.updateNominationTicket(nominationTicket);
+
+    if(nominationTicketSheet == 0) {
+      throw new UserNotFoundException("会員ID " + nominationTicket.getUserId() + " の指名回数券は見つかりません");
+    }
   }
 }
