@@ -2,10 +2,11 @@ package CAP_FIT.TicketManagement.Data;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NominationTicket {
+public class Tickets {
 
-  private int ticketNumber;
+  @Min(value = 1, message = "1以上の数字を入力してください")
+  private Integer ticketNumber;
 
   @Pattern(regexp = "^0[789]0-?\\d{4}-?\\d{4}$", message = "ハイフン付きで入力してください")
   private String userId;
@@ -30,13 +32,19 @@ public class NominationTicket {
   @Pattern(regexp = "^[ァ-ヶー]+$", message = "カタカナのみ入力できます")
   private String userName;
 
-  public NominationTicket(String userId) {
+  @NotBlank
+  @Size(max = 30, message = "30字以内で入力してください")
+  private String ticketName;
+
+  public Tickets(String userId) {
     this.userId = userId;
   }
-  public NominationTicket(String userId, Integer remaining, LocalDate buyDay, String userName) {
+  public Tickets(Integer ticketNumber,  String userId, Integer remaining, LocalDate buyDay, String userName, String ticketName) {
+    this.ticketNumber = ticketNumber;
     this.userId = userId;
     this.remaining = remaining;
     this.buyDay = buyDay;
     this.userName = userName;
+    this.ticketName = ticketName;
   }
 }

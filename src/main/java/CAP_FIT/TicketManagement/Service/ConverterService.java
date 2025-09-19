@@ -2,8 +2,7 @@ package CAP_FIT.TicketManagement.Service;
 
 import CAP_FIT.TicketManagement.Converter.TicketConverter;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
-import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
-import CAP_FIT.TicketManagement.Service.Data.StretchTicketService;
+import CAP_FIT.TicketManagement.Service.Data.TicketsService;
 import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
 import java.util.List;
 import lombok.Getter;
@@ -17,25 +16,24 @@ import org.springframework.stereotype.Service;
 public class ConverterService {
 
   private TicketUserService ticketUserService;
-  private NominationTicketService nominationTicketService;
-  private StretchTicketService stretchTicketService;
+  private TicketsService ticketsService;
 
   private TicketConverter ticketConverter;
 
   @Autowired
-  public ConverterService(TicketUserService ticketUserService,NominationTicketService nominationTicketService, StretchTicketService stretchTicketService, TicketConverter ticketConverter) {
+  public ConverterService(TicketUserService ticketUserService, TicketsService ticketsService, TicketConverter ticketConverter) {
     this.ticketUserService = ticketUserService;
-    this.nominationTicketService = nominationTicketService;
-    this.stretchTicketService = stretchTicketService;
+    this.ticketsService = ticketsService;
 
     this.ticketConverter = ticketConverter;
   }
 
   public List<UserInfo> userInfoList() {
-    return ticketConverter.convertUserInfoList(ticketUserService.searchUserList(), nominationTicketService.searchNominationTicketList(), stretchTicketService.searchStretchTicketList());
+    return ticketConverter.convertUserInfoList(ticketUserService.searchUserList(), ticketsService.searchTicketsList());
   }
 
   public List<UserInfo> selectUserInfo(String name) {
-    return ticketConverter.convertUserInfoList(ticketUserService.searchSelectUserList(name),nominationTicketService.searchNominationTicketList(),stretchTicketService.searchStretchTicketList());
+    return ticketConverter.convertUserInfoList(ticketUserService.searchSelectUserList(name),
+        ticketsService.searchTicketsList());
   }
 }
