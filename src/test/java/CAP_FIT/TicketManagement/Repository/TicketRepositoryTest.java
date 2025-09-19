@@ -1,7 +1,6 @@
 package CAP_FIT.TicketManagement.Repository;
 
-import CAP_FIT.TicketManagement.Data.NominationTicket;
-import CAP_FIT.TicketManagement.Data.StretchTicket;
+import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,14 +23,8 @@ class TicketRepositoryTest {
   }
 
   @Test
-  void 指名回数券の全件検索が可能() {
-    List<NominationTicket> actual = sut.nominationTicketList();
-    Assertions.assertThat(actual.size()).isEqualTo(2);
-  }
-
-  @Test
-  void ストレッチ回数券の全件検索が可能() {
-    List<StretchTicket> actual = sut.stretchTicketList();
+  void 回数券の全件検索が可能() {
+    List<Tickets> actual = sut.ticketsList();
     Assertions.assertThat(actual.size()).isEqualTo(2);
   }
 
@@ -56,23 +49,12 @@ class TicketRepositoryTest {
   }
 
   @Test
-  void 指名回数券の登録が可能() {
-    NominationTicket nominationTicket = new NominationTicket("090-1234-1234", 10, LocalDate.of(2025,9,1), "テスト3");
+  void 回数券の登録が可能() {
+    Tickets tickets = new Tickets(1,"090-1234-1234", 10, LocalDate.of(2025,9,1), "テスト3", "指名回数券");
 
-    sut.insertNominationTicket(nominationTicket);
+    sut.insertTickets(tickets);
 
-    List<NominationTicket> actual = sut.nominationTicketList();
-
-    Assertions.assertThat(actual.size()).isEqualTo(3);
-  }
-
-  @Test
-  void ストレッチ回数券の登録が可能() {
-    StretchTicket stretchTicket = new StretchTicket("090-1234-1234",10, LocalDate.of(2025,9,1), "テスト3");
-
-    sut.insertStretchTicket(stretchTicket);
-
-    List<StretchTicket> actual = sut.stretchTicketList();
+    List<Tickets> actual = sut.ticketsList();
 
     Assertions.assertThat(actual.size()).isEqualTo(3);
   }

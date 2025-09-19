@@ -1,9 +1,9 @@
 package CAP_FIT.TicketManagement.Domain;
 
-import CAP_FIT.TicketManagement.Data.NominationTicket;
-import CAP_FIT.TicketManagement.Data.StretchTicket;
+import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +15,6 @@ public class UserInfo {
   private User user;
 
   @Valid
-  private NominationTicket nominationTicket;
-
-  @Valid
-  private StretchTicket stretchTicket;
+  private List<Tickets> tickets;
 
 }

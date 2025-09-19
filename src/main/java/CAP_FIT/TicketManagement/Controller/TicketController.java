@@ -1,12 +1,10 @@
 package CAP_FIT.TicketManagement.Controller;
 
-import CAP_FIT.TicketManagement.Data.NominationTicket;
-import CAP_FIT.TicketManagement.Data.StretchTicket;
+import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
 import CAP_FIT.TicketManagement.Service.ConverterService;
-import CAP_FIT.TicketManagement.Service.Data.NominationTicketService;
-import CAP_FIT.TicketManagement.Service.Data.StretchTicketService;
+import CAP_FIT.TicketManagement.Service.Data.TicketsService;
 import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -26,16 +24,14 @@ public class TicketController {
 
   private final ConverterService converterService;
   private final TicketUserService ticketUserService;
-  private final NominationTicketService nominationTicketService;
-  private final StretchTicketService stretchTicketService;
+  private final TicketsService ticketsService;
 
   @Autowired
-  public TicketController(ConverterService converterService, TicketUserService ticketUserService, NominationTicketService nominationTicketService, StretchTicketService stretchTicketService) {
+  public TicketController(ConverterService converterService, TicketUserService ticketUserService, TicketsService ticketsService) {
 
     this.converterService = converterService;
     this.ticketUserService = ticketUserService;
-    this.nominationTicketService = nominationTicketService;
-    this.stretchTicketService = stretchTicketService;
+    this.ticketsService = ticketsService;
   }
 
   @GetMapping("/userList")
@@ -53,16 +49,10 @@ public class TicketController {
     return ResponseEntity.ok("会員登録が完了しました");
   }
 
-  @PostMapping("/newNominationTicket")
-  public ResponseEntity<String> newNominationTicket(@RequestBody @Valid NominationTicket nominationTicket) {
-    nominationTicketService.newInsertNominationTicket(nominationTicket);
+  @PostMapping("/newTickets")
+  public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
+    ticketsService.searchInsertTickets(tickets);
     return ResponseEntity.ok("指名回数券の登録が完了しました");
-  }
-
-  @PostMapping("/newStretchTicket")
-  public ResponseEntity<String> newStretchTicket(@RequestBody @Valid StretchTicket stretchTicket) {
-    stretchTicketService.newInsertStretchTicket(stretchTicket);
-    return ResponseEntity.ok("ストレッチ回数券の登録が完了しました");
   }
 
   @PutMapping("/updateUser")
@@ -71,9 +61,9 @@ public class TicketController {
      return ResponseEntity.ok("会員情報の更新が完了しました");
   }
 
-  @PutMapping("/updateNominationTicket")
-   public ResponseEntity<String> updateNominationTicket(@RequestBody @Valid NominationTicket nominationTicket) {
-    nominationTicketService.searchUpdateNominationTicket(nominationTicket);
+  @PutMapping("/updateTickets")
+   public ResponseEntity<String> updateNominationTicket(@RequestBody @Valid Tickets tickets) {
+    ticketsService.searchUpdateTickets(tickets);
     return ResponseEntity.ok("指名回数券の更新が完了しました");
   }
 }

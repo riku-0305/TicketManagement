@@ -36,7 +36,6 @@ public class TicketUserService {
 
   @Transactional
   public void newInsertUser(User user) {
-
     List<User> userList = ticketRepository.userList();
     for (User users : userList) {
       if (users.getId().equals(user.getId())) {

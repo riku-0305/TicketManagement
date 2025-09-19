@@ -1,7 +1,6 @@
 package CAP_FIT.TicketManagement.Converter;
 
-import CAP_FIT.TicketManagement.Data.NominationTicket;
-import CAP_FIT.TicketManagement.Data.StretchTicket;
+import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TicketConverter {
 
-  public List<UserInfo> convertUserInfoList(List<User> userList,
-      List<NominationTicket> nominationTicketList, List<StretchTicket> stretchTicketList) {
+  public List<UserInfo> convertUserInfoList(List<User> userList, List<Tickets> ticketsList) {
 
     List<UserInfo> userInfoList = new ArrayList<>();
 
@@ -20,13 +18,13 @@ public class TicketConverter {
       UserInfo userInfo = new UserInfo();
       userInfo.setUser(user);
 
-      nominationTicketList.stream()
-          .filter(nominationTicket -> user.getId().equals(nominationTicket.getUserId()))
-          .forEach(userInfo::setNominationTicket);
+      List<Tickets> convertTickets = new ArrayList<>();
 
-      stretchTicketList.stream().filter(stretchTicket -> user.getId().equals(stretchTicket.getUserId()))
-          .forEach(userInfo::setStretchTicket);
+      convertTickets = ticketsList.stream()
+          .filter(tickets -> user.getId().equals(tickets.getUserId()))
+          .toList();
 
+      userInfo.setTickets(convertTickets);
       userInfoList.add(userInfo);
     });
     return userInfoList;
