@@ -73,4 +73,19 @@ class TicketRepositoryTest {
     Assertions.assertThat(oldUserList.getFirst().getId()).isEqualTo(newUserList.getFirst().getId());
     Assertions.assertThat("テストさん").isEqualTo(newUserList.getFirst().getName());
   }
+
+  @Test
+  void 回数券の更新が可能() {
+    Tickets updateTickets = new Tickets(1, "090-1234-5678", 9, LocalDate.of(2025,9,1), "テスト", "指名回数券");
+
+    List<Tickets> oldTicktsList = sut.ticketsList();
+
+    sut.updateTickets(updateTickets);
+
+    List<Tickets> newTickets = sut.ticketsList();
+
+    Assertions.assertThat(oldTicktsList.size()).isEqualTo(newTickets.size());
+    Assertions.assertThat(oldTicktsList.getFirst().getTicketNumber()).isEqualTo(newTickets.getFirst().getTicketNumber());
+    Assertions.assertThat(9).isEqualTo(newTickets.getFirst().getRemaining());
+  }
 }

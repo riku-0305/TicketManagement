@@ -38,7 +38,7 @@ public class TicketsService {
     int nominationTicketSheet = ticketRepository.updateTickets(tickets);
 
     if(nominationTicketSheet == 0) {
-      throw new UserNotFoundException("会員ID " + tickets.getUserId() + " の回数券は見つかりません");
+      throw new UserNotFoundException("会員ID " + tickets.getUserId() + " の回数券は見つかりません。" + "正しいチケット番号とユーザー番号を入力してください。");
     }
   }
 }
