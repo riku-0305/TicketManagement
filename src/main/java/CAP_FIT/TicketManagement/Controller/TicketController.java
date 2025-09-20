@@ -52,7 +52,7 @@ public class TicketController {
   @PostMapping("/newTickets")
   public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchInsertTickets(tickets);
-    return ResponseEntity.ok("指名回数券の登録が完了しました");
+    return ResponseEntity.ok("回数券の登録が完了しました");
   }
 
   @PutMapping("/updateUser")
@@ -64,6 +64,6 @@ public class TicketController {
   @PutMapping("/updateTickets")
    public ResponseEntity<String> updateNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchUpdateTickets(tickets);
-    return ResponseEntity.ok("指名回数券の更新が完了しました");
+    return ResponseEntity.ok("回数券の更新が完了しました");
   }
 }

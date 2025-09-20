@@ -32,8 +32,8 @@
 
   <update id="updateTickets" parameterType="CAP_FIT.TicketManagement.Data.Tickets">
     UPDATE  tickets
-    SET user_id = #{userId}, remaining = #{remaining}, buy_day = #{buyDay}, user_name = #{userName},  ticket_name = #{ticketName}
-    WHERE ticket_number = #{ticketNumber}
+    SET remaining = #{remaining}, buy_day = #{buyDay}, user_name = #{userName},  ticket_name = #{ticketName}
+    WHERE ticket_number = #{ticketNumber} AND user_id = #{userId}
   </update>
 
 </mapper>

@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Service.Data.TicketsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
 
 import CAP_FIT.TicketManagement.Data.User;
@@ -77,8 +78,8 @@ class TicketControllerTest {
   }
 
   @Test
-  void 指名回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
-    String massage = "指名回数券の登録が完了しました";
+  void 回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
+    String massage = "回数券の登録が完了しました";
     Tickets tickets = new Tickets(1,"090-1234-5678", 10, LocalDate.of(2025,9,10), "テスト", "指名回数券");
 
     Mockito.doNothing().when(ticketsService).searchInsertTickets(tickets);
@@ -115,5 +116,24 @@ class TicketControllerTest {
         .andExpect(content().string(massage));
 
     Mockito.verify(ticketUserService, Mockito.times(1)).searchUpdateUser(Mockito.any(User.class));
+  }
+
+  @Test
+  void 回数券更新メソッドをチケットサービスから呼び出せる() throws Exception {
+    String massage = "回数券の更新が完了しました";
+    Tickets updateTickets = new Tickets(1,"090-1234-5678",10,LocalDate.of(2025,9,20), "テスト", "指名回数券");
+
+    Mockito.doNothing().when(ticketsService).searchUpdateTickets(updateTickets);
+
+    String jsonRequest = objectMapper.writeValueAsString(updateTickets);
+
+    mockMvc.perform(put("/updateTickets")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(ticketsService,Mockito.times(1)).searchUpdateTickets(Mockito.any(Tickets.class));
   }
 }
