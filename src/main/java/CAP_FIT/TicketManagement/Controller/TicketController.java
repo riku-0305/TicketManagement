@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,7 +53,7 @@ public class TicketController {
   @PostMapping("/newTickets")
   public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchInsertTickets(tickets);
-    return ResponseEntity.ok("回数券の登録が完了しました");
+    return ResponseEntity.ok("回数券登録が完了しました");
   }
 
   @PutMapping("/updateUser")
@@ -62,8 +63,14 @@ public class TicketController {
   }
 
   @PutMapping("/updateTickets")
-   public ResponseEntity<String> updateNominationTicket(@RequestBody @Valid Tickets tickets) {
+   public ResponseEntity<String> updateTickets(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchUpdateTickets(tickets);
     return ResponseEntity.ok("回数券の更新が完了しました");
+  }
+
+  @DeleteMapping("/deleteUserInfo")
+  public ResponseEntity<String> deleteUserInfo(@RequestBody @Valid User user) {
+   ticketUserService.deleteUserInfo(user);
+   return ResponseEntity.ok("会員情報の削除が完了しました");
   }
 }

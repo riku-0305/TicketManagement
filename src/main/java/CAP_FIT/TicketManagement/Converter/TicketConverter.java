@@ -18,9 +18,7 @@ public class TicketConverter {
       UserInfo userInfo = new UserInfo();
       userInfo.setUser(user);
 
-      List<Tickets> convertTickets = new ArrayList<>();
-
-      convertTickets = ticketsList.stream()
+      List<Tickets> convertTickets = ticketsList.stream()
           .filter(tickets -> user.getId().equals(tickets.getUserId()))
           .toList();
 

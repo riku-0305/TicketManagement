@@ -35,5 +35,13 @@
     SET remaining = #{remaining}, buy_day = #{buyDay}, user_name = #{userName},  ticket_name = #{ticketName}
     WHERE ticket_number = #{ticketNumber} AND user_id = #{userId}
   </update>
+  
+  <delete id="deleteUser" parameterType="CAP_FIT.TicketManagement.Data.User">
+    DELETE FROM gym_user WHERE id = #{id} AND name = #{name}
+  </delete>
+
+  <delete id="deleteTickets" parameterType="CAP_FIT.TicketManagement.Data.Tickets">
+    DELETE FROM tickets WHERE user_id = #{userId}
+  </delete>
 
 </mapper>
