@@ -22,4 +22,8 @@ public interface TicketRepository {
 
   int updateTickets(Tickets tickets);
 
+  int deleteUser(User user);
+
+  void deleteTickets(String userId);
+
 }

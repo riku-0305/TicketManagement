@@ -4,7 +4,6 @@ package CAP_FIT.TicketManagement.Service.Data;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -55,5 +54,25 @@ public class TicketUserService {
       }
     }
     throw new UserNotFoundException("会員番号　" + user.getId() + " は存在しません");
+  }
+
+  private void searchDeleteUser(User user) {
+    int dropUser = ticketRepository.deleteUser(user);
+
+    if(dropUser == 0) {
+      throw new UserNotFoundException("会員番号　" + user.getId() + " は存在しません。" + "正しいユーザー番号と名前を入力してください。");
+    }
+  }
+
+  private void searchDeleteTickets(String userId) {
+    ticketRepository.deleteTickets(userId);
+  }
+
+  @Transactional
+  public void deleteUserInfo(User user) {
+    String id = user.getId();
+    searchDeleteTickets(id);
+
+    searchDeleteUser(user);
   }
 }

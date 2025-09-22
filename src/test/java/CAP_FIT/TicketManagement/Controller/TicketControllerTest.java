@@ -79,7 +79,7 @@ class TicketControllerTest {
 
   @Test
   void 回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
-    String massage = "回数券の登録が完了しました";
+    String massage = "回数券登録が完了しました";
     Tickets tickets = new Tickets(1,"090-1234-5678", 10, LocalDate.of(2025,9,10), "テスト", "指名回数券");
 
     Mockito.doNothing().when(ticketsService).searchInsertTickets(tickets);
