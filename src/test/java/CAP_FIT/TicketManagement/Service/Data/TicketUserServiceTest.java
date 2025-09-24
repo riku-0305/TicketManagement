@@ -1,5 +1,6 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
+import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
@@ -125,5 +126,31 @@ class TicketUserServiceTest {
     });
 
    Assertions.assertEquals("会員番号　" + user.getId() + " は存在しません", actual.getMessage());
+  }
+
+  @Test
+  void リポジトリから会員削除メソッドを呼び出せる() {
+    User deleteUser = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    Mockito.when(ticketRepository.deleteUser(deleteUser)).thenReturn(1);
+    Mockito.doNothing().when(ticketRepository).deleteTickets(deleteUser.getId());
+
+    sut.deleteUserInfo(deleteUser);
+
+    Mockito.verify(ticketRepository,Mockito.times(1)).deleteUser(deleteUser);
+    Mockito.verify(ticketRepository,Mockito.times(1)).deleteTickets(deleteUser.getId());
+  }
+
+  @Test
+  void 会員削除時に会員が存在しなければ例外を返す() {
+    User deleteUser = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+
+    Mockito.when(ticketRepository.deleteUser(deleteUser)).thenReturn(0);
+
+    UserNotFoundException actual = Assertions.assertThrows(UserNotFoundException.class, () -> {
+      sut.deleteUserInfo(deleteUser);
+    });
+
+    Assertions.assertEquals("会員番号　" + deleteUser.getId() + " は存在しません。" + "正しいユーザー番号と名前を入力してください。", actual.getMessage());
   }
 }

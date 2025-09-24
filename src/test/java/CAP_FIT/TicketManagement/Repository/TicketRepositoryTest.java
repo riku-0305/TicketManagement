@@ -3,6 +3,7 @@ package CAP_FIT.TicketManagement.Repository;
 import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ class TicketRepositoryTest {
 
   @Autowired
   private TicketRepository sut;
-
 
   @Test
   void 会員情報の全件検索が可能() {
@@ -87,5 +87,19 @@ class TicketRepositoryTest {
     Assertions.assertThat(oldTicktsList.size()).isEqualTo(newTickets.size());
     Assertions.assertThat(oldTicktsList.getFirst().getTicketNumber()).isEqualTo(newTickets.getFirst().getTicketNumber());
     Assertions.assertThat(9).isEqualTo(newTickets.getFirst().getRemaining());
+  }
+
+  @Test
+  void 会員と回数券をまとめて削除が可能() {
+    User deleteUser = new User("090-1234-5678","テスト","testsan@gmail.com", 15000, LocalDate.of(2025,9,30));
+
+    sut.deleteTickets(deleteUser.getId());
+    sut.deleteUser(deleteUser);
+
+    List<Tickets> ticketsList = sut.ticketsList();
+    List<User> userList = sut.userList();
+
+    Assertions.assertThat(ticketsList.size()).isEqualTo(1);
+    Assertions.assertThat(userList.size()).isEqualTo(2);
   }
 }

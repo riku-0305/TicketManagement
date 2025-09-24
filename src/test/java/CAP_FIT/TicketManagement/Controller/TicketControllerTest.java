@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Service.Data.TicketsService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
 
 import CAP_FIT.TicketManagement.Data.User;
@@ -135,5 +134,26 @@ class TicketControllerTest {
         .andExpect(content().string(massage));
 
     Mockito.verify(ticketsService,Mockito.times(1)).searchUpdateTickets(Mockito.any(Tickets.class));
+  }
+
+  @Test
+  void 会員情報削除メソッドをユーザーサービスから呼び出せる() throws Exception {
+    String massage = "会員情報の削除が完了しました";
+    User deleteUser = new User("090-1234-5678", "テスト", "test@gmail.com", 10000,
+        LocalDate.of(2025, 9, 10));
+
+    Mockito.doNothing().when(ticketUserService).deleteUserInfo(deleteUser);
+
+    String jsonRequest = objectMapper.writeValueAsString(deleteUser);
+
+    mockMvc.perform(delete("/deleteUserInfo")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonRequest))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string(massage));
+
+    Mockito.verify(ticketUserService,Mockito.times(1)).deleteUserInfo(Mockito.any(User.class));
+
   }
 }
