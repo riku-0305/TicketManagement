@@ -16,24 +16,28 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Tickets {
 
-  @Min(value = 1, message = "1以上の数字を入力してください")
+  @NotNull(message = "回数券番号の入力は必須です。")
+  @Min(value = 1, message = "1以上の数字を入力してください。")
   private Integer ticketNumber;
 
-  @Pattern(regexp = "^0[789]0-?\\d{4}-?\\d{4}$", message = "ハイフン付きで入力してください")
+  @NotBlank(message = "ユーザーIDの入力は必須です。")
+  @Pattern(regexp = "^0[789]0-?\\d{4}-?\\d{4}$", message = "携帯番号をハイフン付きで入力してください。")
   private String userId;
 
-  @Min(value = 0, message = "0以上10以下の数字を入力してください")
-  @Max(value = 10, message = "0以上10以下の数字を入力してください")
+  @Min(value = 0, message = "0以上30以下の数字を入力してください。")
+  @Max(value = 30, message = "0以上30以下の数字を入力してください。")
+  @NotNull(message = "残回数の入力は必須です。")
   private Integer remaining;
 
-  @NotNull
+  @NotNull(message = "購入日の入力は必須です。")
   private LocalDate buyDay;
 
-  @Pattern(regexp = "^[ァ-ヶー]+$", message = "カタカナのみ入力できます")
+  @NotBlank(message = "ユーザー名の入力は必須です。")
+  @Pattern(regexp = "^[ァ-ヶー]+$", message = "カタカナのみ入力できます。")
   private String userName;
 
-  @NotBlank
-  @Size(max = 30, message = "30字以内で入力してください")
+  @NotBlank(message = "回数券名の入力は必須です。")
+  @Size(max = 30, message = "30字以内で入力してください。")
   private String ticketName;
 
   public Tickets(String userId) {
