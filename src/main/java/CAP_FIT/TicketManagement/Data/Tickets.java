@@ -16,12 +16,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Tickets {
 
-  @NotNull(message = "回数券番号の入力は必須です。")
+
   @Min(value = 1, message = "1以上の数字を入力してください。")
   private Integer ticketNumber;
 
   @NotBlank(message = "ユーザーIDの入力は必須です。")
-  @Pattern(regexp = "^0[789]0-?\\d{4}-?\\d{4}$", message = "携帯番号をハイフン付きで入力してください。")
+  @Pattern(regexp = "^0[789]0-\\d{4}-\\d{4}$", message = "携帯番号をハイフン付きで入力してください。")
   private String userId;
 
   @Min(value = 0, message = "0以上30以下の数字を入力してください。")

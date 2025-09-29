@@ -257,7 +257,6 @@ class TicketControllerTest {
     return Stream.of(
 
         // 1. ticketNumber (回数券番号) のエラーパターン
-        Arguments.of("ticketNumber", null, List.of("回数券番号の入力は必須です。")),
         Arguments.of("ticketNumber", 0, List.of("1以上の数字を入力してください。")),
 
         // 2. userId (携帯番号) のエラーパターン
