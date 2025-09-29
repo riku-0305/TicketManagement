@@ -54,5 +54,5 @@
 | **DELETE** |  `/api/deleteUserInfo` | 特定のユーザー情報とそのユーザーが持つ回数券情報を一括削除します。 |
 
 ###  API動作確認（成功例）
-![回数券購入APIの成功レスポンス](<img width="1266" height="629" alt="スクリーンショット 2025-09-29 222447" src="https://github.com/user-attachments/assets/342ae55c-5252-4834-91c1-977e291e6234" />
-)
+
+![回数券購入APIの成功レスポンス](https://github.com/user-attachments/assets/7b86b229-9020-4475-b73b-c7249820e2e0)
