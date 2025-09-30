@@ -28,10 +28,19 @@ public class ConverterService {
     this.ticketConverter = ticketConverter;
   }
 
+  /**
+   * convertUserInfoListからマッピングされたユーザー情報とそのユーザーに紐づく回数券情報リストの取得が可能
+   * @return マッピングされた全件のユーザー情報
+   */
   public List<UserInfo> userInfoList() {
     return ticketConverter.convertUserInfoList(ticketUserService.searchUserList(), ticketsService.searchTicketsList());
   }
 
+  /**
+   * convertUserInfoListから名前で指定し、マッピングされたユーザー情報とそのユーザーに紐づく回数券情報リストの取得が可能
+   * @param name 指定されたユーザーの名前
+   * @return マッピングされた指定のユーザー情報
+   */
   public List<UserInfo> selectUserInfo(String name) {
     return ticketConverter.convertUserInfoList(ticketUserService.searchSelectUserList(name),
         ticketsService.searchTicketsList());

@@ -35,6 +35,12 @@ public class TicketController {
     this.ticketsService = ticketsService;
   }
 
+  /**
+   * 全件のユーザー情報と各ユーザーに紐づく回数券情報リストを取得できる。
+   * ユーザー名を指定して取得も可能。
+   * @param name　ユーザー名
+   * @return ユーザー情報とそのユーザーに紐づく回数券情報リスト
+   */
   @GetMapping("/userList")
   public List<UserInfo> getUserList(
       @RequestParam(name = "name", required = false) String name) {
@@ -44,30 +50,55 @@ public class TicketController {
     return converterService.userInfoList();
   }
 
+  /**
+   * 新規ユーザー情報の登録が可能
+   * @param user ユーザー情報
+   * @return 登録完了メッセージ
+   */
   @PostMapping("/newUser")
   public ResponseEntity<String> newUser(@RequestBody @Valid User user) {
     ticketUserService.newInsertUser(user);
     return ResponseEntity.ok("会員登録が完了しました");
   }
 
+  /**
+   * 既存ユーザーに紐づいた新規回数券情報の登録が可能
+   * @param tickets 回数券情報
+   * @return 登録完了メッセージ
+   */
   @PostMapping("/newTickets")
   public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchInsertTickets(tickets);
     return ResponseEntity.ok("回数券登録が完了しました");
   }
 
+  /**
+   * 既存ユーザー情報の更新が可能
+   * @param user ユーザー情報
+   * @return 更新完了メッセージ
+   */
   @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody @Valid User user) {
      ticketUserService.searchUpdateUser(user);
      return ResponseEntity.ok("会員情報の更新が完了しました");
   }
 
+  /**
+   * 既存の回数券情報の更新が可能
+   * @param tickets 回数券情報
+   * @return 更新完了メッセージ
+   */
   @PutMapping("/updateTickets")
    public ResponseEntity<String> updateTickets(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchUpdateTickets(tickets);
     return ResponseEntity.ok("回数券の更新が完了しました");
   }
 
+  /**
+   * 既存ユーザーの情報とそのユーザーに紐づく回数券情報の一括削除
+   * @param user ユーザー情報
+   * @return 削除完了メッセージ
+   */
   @DeleteMapping("/deleteUserInfo")
   public ResponseEntity<String> deleteUserInfo(@RequestBody @Valid User user) {
    ticketUserService.deleteUserInfo(user);

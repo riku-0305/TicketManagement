@@ -20,10 +20,20 @@ public class TicketUserService {
     this.ticketRepository = ticketRepository;
   }
 
+  /**
+   * チケットリポジトリから全件のユーザー情報の取得が可能
+   * @return 全件のユーザー情報
+   */
   public List<User> searchUserList() {
     return ticketRepository.userList();
   }
 
+  /**
+   * 名前での検索によるユーザー情報の取得が可能
+   * 指定されたユーザーネームがない場合は例外を返す
+   * @param name 指定されたユーザーネーム
+   * @return 指定された名前を持つユーザーリスト
+   */
   public List<User> searchSelectUserList(String name) {
     List<User> nameSelectUserList = ticketRepository.selectUserList(name);
 
@@ -33,6 +43,11 @@ public class TicketUserService {
     return nameSelectUserList;
   }
 
+  /**
+   * 新規ユーザー情報の登録が可能
+   * チケットリポジトリから全件のユーザーリストを呼び出してIDが競合していれば例外を返す
+   * @param user 新規ユーザー情報
+   */
   @Transactional
   public void newInsertUser(User user) {
     List<User> userList = ticketRepository.userList();
@@ -44,6 +59,11 @@ public class TicketUserService {
     ticketRepository.insertUser(user);
   }
 
+  /**
+   * 既存ユーザーの更新が可能
+   * チケットリポジトリからユーザーリストを呼び出して引数のユーザーのIDにマッチしない場合は例外を返す
+   * @param user 既存ユーザー更新情報
+   */
   @Transactional
   public void searchUpdateUser(User user) {
     List<User> userList = ticketRepository.userList();
@@ -56,6 +76,11 @@ public class TicketUserService {
     throw new UserNotFoundException("会員番号　" + user.getId() + " は存在しません");
   }
 
+  /**
+   * ユーザー情報の削除が可能
+   * チケットリポジトリからdeleteUserを呼び出し、0件の場合は例外を返す
+   * @param user 削除したいユーザー情報
+   */
   private void searchDeleteUser(User user) {
     int dropUser = ticketRepository.deleteUser(user);
 
@@ -64,10 +89,18 @@ public class TicketUserService {
     }
   }
 
+  /**
+   * 削除したいユーザー情報に紐づく回数券情報リストの削除が可能
+   * @param userId 削除したいユーザーのID
+   */
   private void searchDeleteTickets(String userId) {
     ticketRepository.deleteTickets(userId);
   }
 
+  /**
+   * ユーザー情報とそのユーザーに紐づく回数券情報リストの一括削除が可能
+   * @param user
+   */
   @Transactional
   public void deleteUserInfo(User user) {
     String id = user.getId();
