@@ -17,23 +17,28 @@ import lombok.Setter;
 @AllArgsConstructor
 public class User {
 
+  //ユーザーID
   @NotBlank(message = "IDの入力は必須です。")
   @Pattern(regexp = "^0[789]0-\\d{4}-\\d{4}$" , message = "携帯番号をハイフン付きで入力してください。")
   private String id;
 
+  //ユーザー名
   @NotBlank(message = "名前の入力は必須です。")
   @Pattern(regexp = "^[ァ-ヶー]+$", message = "カタカナのみ入力できます。")
   @Size(max = 30, message = "30字以内で入力してください")
   private String name;
 
+  //メールアドレス
   @NotBlank(message = "メールアドレスの入力は必須です。")
   @Pattern(regexp = "^[\\w.-]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "無効なメールアドレスです。")
   private String emailAddress;
 
+  //月会費
   @NotNull(message = "金額の入力は必須です。")
   @Min(value = 1, message = "会費は1円以上を入力してください。")
   private Integer membershipFee;
 
+  //入会日
   @NotNull(message = "入会日の入力は必須です。")
   private LocalDate admissionDay;
 

@@ -11,9 +11,11 @@ import lombok.Setter;
 @Setter
 public class UserInfo {
 
+  //ユーザー
   @Valid
   private User user;
 
+  //ユーザーが持つ回数券リスト
   @Valid
   private List<Tickets> tickets;
 

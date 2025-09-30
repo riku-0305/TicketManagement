@@ -10,6 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TicketConverter {
 
+  /**
+   * ユーザー情報とそのユーザーに紐づく回数券情報のマッピングが可能
+   * @param userList 全件のユーザー情報
+   * @param ticketsList 全件の回数券情報
+   * @return ユーザー情報とそのユーザーに紐づく回数券情報リスト
+   */
   public List<UserInfo> convertUserInfoList(List<User> userList, List<Tickets> ticketsList) {
 
     List<UserInfo> userInfoList = new ArrayList<>();
