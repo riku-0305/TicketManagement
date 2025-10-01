@@ -88,8 +88,8 @@ class TicketControllerTest {
   @Test
   void 会員登録メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
     String massage = "会員登録が完了しました";
-    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 10000,
-        LocalDate.of(2025, 9, 10));
+    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
+        LocalDate.now());
 
     Mockito.doNothing().when(ticketUserService).newInsertUser(user);
 
@@ -108,8 +108,8 @@ class TicketControllerTest {
   @Test
   void 回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
     String massage = "回数券登録が完了しました";
-    Tickets tickets = new Tickets(1, "090-1234-5678", 10, LocalDate.of(2025, 9, 10), "テスト",
-        "指名回数券");
+    Tickets tickets = new Tickets(1, "090-1234-5678", 30, LocalDate.now(), "テスト",
+        "テスト");
 
     Mockito.doNothing().when(ticketsService).searchInsertTickets(tickets);
 
@@ -130,8 +130,8 @@ class TicketControllerTest {
   void 会員情報更新メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
     String massage = "会員情報の更新が完了しました";
 
-    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 10000,
-        LocalDate.of(2025, 9, 10));
+    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
+        LocalDate.now());
 
     Mockito.doNothing().when(ticketUserService).searchUpdateUser(user);
 
@@ -150,8 +150,8 @@ class TicketControllerTest {
   @Test
   void 回数券更新メソッドをチケットサービスから呼び出せる() throws Exception {
     String massage = "回数券の更新が完了しました";
-    Tickets updateTickets = new Tickets(1, "090-1234-5678", 10, LocalDate.of(2025, 9, 10), "テスト",
-        "指名回数券");
+    Tickets updateTickets = new Tickets(1, "090-1234-5678", 1, LocalDate.now(), "テスト",
+        "テスト");
 
     Mockito.doNothing().when(ticketsService).searchUpdateTickets(updateTickets);
 
@@ -171,8 +171,8 @@ class TicketControllerTest {
   @Test
   void 会員情報削除メソッドをユーザーサービスから呼び出せる() throws Exception {
     String massage = "会員情報の削除が完了しました";
-    User deleteUser = new User("090-1234-5678", "テスト", "test@gmail.com", 10000,
-        LocalDate.of(2025, 9, 10));
+    User deleteUser = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
+        LocalDate.now());
 
     Mockito.doNothing().when(ticketUserService).deleteUserInfo(deleteUser);
 
@@ -188,24 +188,38 @@ class TicketControllerTest {
     Mockito.verify(ticketUserService, Mockito.times(1)).deleteUserInfo(Mockito.any(User.class));
   }
 
+  /**
+   * @return バリデーションエラーにならないユーザー情報
+   */
   private User createValidUser() {
-    return new User("090-1234-5678", "テストセイコウ", "test@gmail.com", 10000, LocalDate.now());
+    return new User("090-1234-5678", "テストセイコウ", "test@gmail.com", 1, LocalDate.now());
   }
 
+  /**
+   * @return バリデーションエラーにならない回数券情報
+   */
   private Tickets createValidTickets() {
-    return new Tickets(1,"090-1234-5678", 10,LocalDate.now(),"テスト", "テスト回数券");
+    return new Tickets(1,"090-1234-5678", 1,LocalDate.now(),"テスト", "テスト回数券");
   }
 
-  //エラーメッセージの検証を行うメソッド
-  private static <T> void assertViolationMessage(Set<ConstraintViolation<T>> violations,
-      List<String> expectedErrorMassage) {
+  /**
+   * 実際に発生したバリデーションエラーと期待するバリデーションエラーメッセージのサイズを検証
+   * violationsからバリデーションエラーメッセージのみを取り出し、順番を無視して期待されるバリデーションエラーメッセージと中身を検証
+   * @param violations 発生した全てのバリデーションエラー
+   * @param expectedErrorMassage 期待されるバリデーションエラーメッセージリスト
+   * @param <T> 任意のDTOクラスの型
+   */
+  private static <T> void assertViolationMessage(Set<ConstraintViolation<T>> violations, List<String> expectedErrorMassage) {
     assertThat(violations)
         .hasSize(expectedErrorMassage.size())
         .extracting(ConstraintViolation::getMessage)
         .containsExactlyInAnyOrderElementsOf(expectedErrorMassage);
   }
 
-  //ユーザークラスのIDフィールドのバリデーションエラーが発生する値とそれに該当するメッセージ
+  /**
+   * Userフィールドの各フィールド、バリデーションエラーが発生する値、バリデーションエラーメッセージを設定
+   * @return フィールド名、バリデーションエラーが発生する値、バリデーションエラーメッセージリスト
+   */
   static Stream<Arguments> invalidUserDate() {
     return Stream.of(
 
@@ -231,28 +245,39 @@ class TicketControllerTest {
     );
   }
 
+  /**
+   * ユーザークラスの各フィールドにエラーが発生しない値(createValidUser())をincompleteUserに代入
+   * 条件分岐で指定したフィールドのみバリデーションエラーが発生するようにincompleteUserに値をセット
+   * これにより全てのフィールドのバリデーションエラーを1回ずつ検証が可能
+   * @param targetField Userクラスのフィールド
+   * @param inputValue バリデーションエラーが発生する値(バリデーションエラーの型が複数存在するためObject型を採用)
+   * @param expectedErrorMassage 期待されるバリデーションエラーのメッセージリスト
+   */
   @ParameterizedTest
   @MethodSource("invalidUserDate")
   void Userクラスのバリデーションのエラーを全て返す(String targetField, Object inputValue,
       List<String> expectedErrorMassage) {
-    User user = createValidUser();
+    User incompleteUser = createValidUser();
 
     if ("id".equals(targetField)) {
-      user.setId((String) inputValue);
+      incompleteUser.setId((String) inputValue);
     } else if ("name".equals(targetField)) {
-      user.setName((String) inputValue);
+      incompleteUser.setName((String) inputValue);
     } else if ("emailAddress".equals(targetField)) {
-
-      user.setEmailAddress((String) inputValue);
+      incompleteUser.setEmailAddress((String) inputValue);
     } else if ("membershipFee".equals(targetField)) {
-      user.setMembershipFee((Integer) inputValue);
+      incompleteUser.setMembershipFee((Integer) inputValue);
     } else if ("admissionDay".equals(targetField)) {
-      user.setAdmissionDay((LocalDate) inputValue);
+      incompleteUser.setAdmissionDay((LocalDate) inputValue);
     }
-    Set<ConstraintViolation<User>> violations = validator.validate(user);
+    Set<ConstraintViolation<User>> violations = validator.validate(incompleteUser);
     assertViolationMessage(violations, expectedErrorMassage);
   }
 
+  /**
+   * Ticketsフィールドの各フィールド、バリデーションエラーが発生する値、バリデーションエラーメッセージを設定
+   * @return フィールド名、バリデーションエラーが発生する値、バリデーションエラーメッセージリスト
+   */
   static Stream<Arguments> invalidTicketsDate() {
     return Stream.of(
 
@@ -281,26 +306,34 @@ class TicketControllerTest {
     );
   }
 
+  /**
+   * チケットクラスの各フィールドにエラーが発生しない値(createValidTickets())をincompleteTicketsに代入
+   * 条件分岐で指定したフィールドのみバリデーションエラーが発生するようにincompleteTicketsに値をセット
+   * これにより全てのフィールドのバリデーションエラーを1回ずつ検証が可能
+   * @param targetField Ticketsクラスのフィールド
+   * @param inputValue バリデーションエラーが発生する値
+   * @param expectedErrorMassage 期待されるバリデーションエラーのメッセージリスト
+   */
   @ParameterizedTest
   @MethodSource("invalidTicketsDate")
   void Ticketsクラスのバリデーションのエラーを全て返す(String targetField, Object inputValue, List<String> expectedErrorMassage) {
-    Tickets tickets = createValidTickets();
+    Tickets incompleteTickets = createValidTickets();
 
     if("ticketNumber".equals(targetField)) {
-      tickets.setTicketNumber((Integer) inputValue);
+      incompleteTickets.setTicketNumber((Integer) inputValue);
     } else if ("userId".equals(targetField)) {
-      tickets.setUserId((String) inputValue);
+      incompleteTickets.setUserId((String) inputValue);
     }else if ("remaining".equals(targetField)) {
-      tickets.setRemaining((Integer) inputValue);
+      incompleteTickets.setRemaining((Integer) inputValue);
     } else if ("buyDay".equals(targetField)) {
-      tickets.setBuyDay((LocalDate) inputValue);
+      incompleteTickets.setBuyDay((LocalDate) inputValue);
     } else if ("userName".equals(targetField)) {
-      tickets.setUserName((String) inputValue);
+      incompleteTickets.setUserName((String) inputValue);
     } else if ("ticketName".equals(targetField)) {
-      tickets.setTicketName((String) inputValue);
+      incompleteTickets.setTicketName((String) inputValue);
     }
 
-    Set<ConstraintViolation<Tickets>> violations = validator.validate(tickets);
+    Set<ConstraintViolation<Tickets>> violations = validator.validate(incompleteTickets);
     assertViolationMessage(violations, expectedErrorMassage);
   }
 }
