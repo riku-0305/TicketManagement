@@ -90,21 +90,13 @@ public class TicketUserService {
   }
 
   /**
-   * 削除したいユーザー情報に紐づく回数券情報リストの削除が可能
-   * @param userId 削除したいユーザーのID
-   */
-  private void searchDeleteTickets(String userId) {
-    ticketRepository.deleteTickets(userId);
-  }
-
-  /**
    * ユーザー情報とそのユーザーに紐づく回数券情報リストの一括削除が可能
-   * @param user
+   * @param user 削除したいユーザー
    */
   @Transactional
   public void deleteUserInfo(User user) {
     String id = user.getId();
-    searchDeleteTickets(id);
+    ticketRepository.deleteTickets(id);
 
     searchDeleteUser(user);
   }

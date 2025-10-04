@@ -48,14 +48,14 @@ public interface TicketRepository {
   /**
    * 回数券情報の更新が可能
    * @param tickets 回数券更新情報
-   * @return
+   * @return 更新した回数券の件数
    */
   int updateTickets(Tickets tickets);
 
   /**
    * ユーザーの削除が可能
    * @param user 削除したいユーザー情報
-   * @return
+   * @return 削除したユーザーの件数
    */
   int deleteUser(User user);
 
