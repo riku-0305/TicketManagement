@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import CAP_FIT.TicketManagement.Data.Tickets;
+import CAP_FIT.TicketManagement.Service.Data.RecordService;
 import CAP_FIT.TicketManagement.Service.Data.TicketsService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -49,6 +50,9 @@ class TicketControllerTest {
 
   @MockitoBean
   private TicketsService ticketsService;
+
+  @MockitoBean
+  private RecordService recordService;
 
   private static ValidatorFactory factory;
   private static Validator validator;

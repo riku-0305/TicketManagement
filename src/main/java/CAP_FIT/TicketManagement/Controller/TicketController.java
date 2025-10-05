@@ -1,9 +1,11 @@
 package CAP_FIT.TicketManagement.Controller;
 
 import CAP_FIT.TicketManagement.Data.Tickets;
+import CAP_FIT.TicketManagement.Data.TrainingRecord;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Domain.UserInfo;
 import CAP_FIT.TicketManagement.Service.ConverterService;
+import CAP_FIT.TicketManagement.Service.Data.RecordService;
 import CAP_FIT.TicketManagement.Service.Data.TicketsService;
 import CAP_FIT.TicketManagement.Service.Data.TicketUserService;
 import jakarta.validation.Valid;
@@ -26,13 +28,15 @@ public class TicketController {
   private final ConverterService converterService;
   private final TicketUserService ticketUserService;
   private final TicketsService ticketsService;
+  private final RecordService recordService;
 
   @Autowired
-  public TicketController(ConverterService converterService, TicketUserService ticketUserService, TicketsService ticketsService) {
+  public TicketController(ConverterService converterService, TicketUserService ticketUserService, TicketsService ticketsService, RecordService recordService) {
 
     this.converterService = converterService;
     this.ticketUserService = ticketUserService;
     this.ticketsService = ticketsService;
+    this.recordService = recordService;
   }
 
   /**
@@ -103,5 +107,11 @@ public class TicketController {
   public ResponseEntity<String> deleteUserInfo(@RequestBody @Valid User user) {
    ticketUserService.deleteUserInfo(user);
    return ResponseEntity.ok("会員情報の削除が完了しました");
+  }
+
+  @PostMapping("/userRecord")
+  public ResponseEntity<String> userRecord(@RequestBody TrainingRecord trainingRecord) {
+   recordService.searchInsertRecord(trainingRecord);
+   return ResponseEntity.ok("新しいカルテ情報が作成されました");
   }
 }
