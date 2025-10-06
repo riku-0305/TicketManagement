@@ -1,6 +1,8 @@
 package CAP_FIT.TicketManagement.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 
 public class TrainingRecord {
 
@@ -15,7 +18,7 @@ public class TrainingRecord {
 
   private String userId;
 
-  private Date trainingMemory;
+  private LocalDate trainingMemory;
 
   private String trainingMemo;
 

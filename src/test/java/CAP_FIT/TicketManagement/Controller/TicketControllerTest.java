@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import CAP_FIT.TicketManagement.Data.Tickets;
+import CAP_FIT.TicketManagement.Data.TrainingRecord;
 import CAP_FIT.TicketManagement.Service.Data.RecordService;
 import CAP_FIT.TicketManagement.Service.Data.TicketsService;
 import jakarta.validation.ConstraintViolation;
@@ -19,6 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.MediaType;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import CAP_FIT.TicketManagement.Data.User;
@@ -73,7 +75,8 @@ class TicketControllerTest {
   @Test
   void 会員と回数券の情報全てをコンバーターサービスから呼び出せる() throws Exception {
     mockMvc.perform(get("/userList"))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
     Mockito.verify(converterService, Mockito.times(1)).userInfoList();
   }
@@ -84,7 +87,8 @@ class TicketControllerTest {
 
     mockMvc.perform(get("/userList")
             .param("name", "テスト"))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
     Mockito.verify(converterService, Mockito.times(1)).selectUserInfo(name);
   }
@@ -110,7 +114,7 @@ class TicketControllerTest {
   }
 
   @Test
-  void 回数券登録メソッドをノミネーションチケットサービスから呼び出せる() throws Exception {
+  void 回数券登録メソッドをチケットサービスから呼び出せる() throws Exception {
     String massage = "回数券登録が完了しました";
     Tickets tickets = new Tickets(1, "090-1234-5678", 30, LocalDate.now(), "テスト",
         "テスト");
@@ -128,6 +132,22 @@ class TicketControllerTest {
 
     Mockito.verify(ticketsService, Mockito.times(1)).searchInsertTickets(Mockito.any(
         Tickets.class));
+  }
+
+  @Test
+  void カルテの登録メソッドをRecordServiceから呼び出しjson形式でリクエストを受け取りユーザーに作成完了のメッセージを返す()
+      throws Exception {
+    TrainingRecord newTrainingRecord = new TrainingRecord(1, "090-1234-5678", LocalDate.now(),
+        "トレーニング内容", "テスト");
+
+    Mockito.doNothing().when(recordService).searchInsertRecord(newTrainingRecord);
+
+    mockMvc.perform(post("/userRecord")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(newTrainingRecord)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("新しいカルテ情報が作成されました"));
   }
 
   @Test
@@ -203,7 +223,7 @@ class TicketControllerTest {
    * @return バリデーションエラーにならない回数券情報
    */
   private Tickets createValidTickets() {
-    return new Tickets(1,"090-1234-5678", 1,LocalDate.now(),"テスト", "テスト回数券");
+    return new Tickets(1, "090-1234-5678", 1, LocalDate.now(), "テスト", "テスト回数券");
   }
 
   /**
@@ -213,7 +233,8 @@ class TicketControllerTest {
    * @param expectedErrorMassage 期待されるバリデーションエラーメッセージリスト
    * @param <T> 任意のDTOクラスの型
    */
-  private static <T> void assertViolationMessage(Set<ConstraintViolation<T>> violations, List<String> expectedErrorMassage) {
+  private static <T> void assertViolationMessage(Set<ConstraintViolation<T>> violations,
+      List<String> expectedErrorMassage) {
     assertThat(violations)
         .hasSize(expectedErrorMassage.size())
         .extracting(ConstraintViolation::getMessage)
@@ -320,14 +341,15 @@ class TicketControllerTest {
    */
   @ParameterizedTest
   @MethodSource("invalidTicketsDate")
-  void Ticketsクラスのバリデーションのエラーを全て返す(String targetField, Object inputValue, List<String> expectedErrorMassage) {
+  void Ticketsクラスのバリデーションのエラーを全て返す(String targetField, Object inputValue,
+      List<String> expectedErrorMassage) {
     Tickets incompleteTickets = createValidTickets();
 
-    if("ticketNumber".equals(targetField)) {
+    if ("ticketNumber".equals(targetField)) {
       incompleteTickets.setTicketNumber((Integer) inputValue);
     } else if ("userId".equals(targetField)) {
       incompleteTickets.setUserId((String) inputValue);
-    }else if ("remaining".equals(targetField)) {
+    } else if ("remaining".equals(targetField)) {
       incompleteTickets.setRemaining((Integer) inputValue);
     } else if ("buyDay".equals(targetField)) {
       incompleteTickets.setBuyDay((LocalDate) inputValue);
