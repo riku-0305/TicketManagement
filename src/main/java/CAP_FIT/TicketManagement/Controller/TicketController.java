@@ -62,7 +62,7 @@ public class TicketController {
   @PostMapping("/newUser")
   public ResponseEntity<String> newUser(@RequestBody @Valid User user) {
     ticketUserService.newInsertUser(user);
-    return ResponseEntity.ok("会員登録が完了しました");
+    return ResponseEntity.ok("ユーザー情報の登録が完了しました");
   }
 
   /**
@@ -73,7 +73,7 @@ public class TicketController {
   @PostMapping("/newTickets")
   public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchInsertTickets(tickets);
-    return ResponseEntity.ok("回数券登録が完了しました");
+    return ResponseEntity.ok("回数券情報の登録が完了しました");
   }
 
   /**
@@ -84,7 +84,7 @@ public class TicketController {
   @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody @Valid User user) {
      ticketUserService.searchUpdateUser(user);
-     return ResponseEntity.ok("会員情報の更新が完了しました");
+     return ResponseEntity.ok("ユーザー情報の更新が完了しました");
   }
 
   /**
@@ -95,7 +95,7 @@ public class TicketController {
   @PutMapping("/updateTickets")
    public ResponseEntity<String> updateTickets(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchUpdateTickets(tickets);
-    return ResponseEntity.ok("回数券の更新が完了しました");
+    return ResponseEntity.ok("回数券情報の更新が完了しました");
   }
 
   /**
@@ -106,7 +106,7 @@ public class TicketController {
   @DeleteMapping("/deleteUserInfo")
   public ResponseEntity<String> deleteUserInfo(@RequestBody @Valid User user) {
    ticketUserService.deleteUserInfo(user);
-   return ResponseEntity.ok("会員情報の削除が完了しました");
+   return ResponseEntity.ok("ユーザー情報の削除が完了しました");
   }
 
   @PostMapping("/userRecord")

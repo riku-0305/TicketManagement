@@ -72,146 +72,6 @@ class TicketControllerTest {
     }
   }
 
-  @Test
-  void 会員と回数券の情報全てをコンバーターサービスから呼び出せる() throws Exception {
-    mockMvc.perform(get("/userList"))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
-    Mockito.verify(converterService, Mockito.times(1)).userInfoList();
-  }
-
-  @Test
-  void 名前に紐づく会員と回数券の情報がコンバーターサービスから呼び出せる() throws Exception {
-    String name = "テスト";
-
-    mockMvc.perform(get("/userList")
-            .param("name", "テスト"))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
-    Mockito.verify(converterService, Mockito.times(1)).selectUserInfo(name);
-  }
-
-  @Test
-  void 会員登録メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
-    String massage = "会員登録が完了しました";
-    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
-        LocalDate.now());
-
-    Mockito.doNothing().when(ticketUserService).newInsertUser(user);
-
-    String jsonRequest = objectMapper.writeValueAsString(user);
-
-    mockMvc.perform(post("/newUser")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jsonRequest))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string(massage));
-
-    Mockito.verify(ticketUserService, Mockito.times(1)).newInsertUser(Mockito.any(User.class));
-  }
-
-  @Test
-  void 回数券登録メソッドをチケットサービスから呼び出せる() throws Exception {
-    String massage = "回数券登録が完了しました";
-    Tickets tickets = new Tickets(1, "090-1234-5678", 30, LocalDate.now(), "テスト",
-        "テスト");
-
-    Mockito.doNothing().when(ticketsService).searchInsertTickets(tickets);
-
-    String jsonRequest = objectMapper.writeValueAsString(tickets);
-
-    mockMvc.perform(post("/newTickets")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jsonRequest))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string(massage));
-
-    Mockito.verify(ticketsService, Mockito.times(1)).searchInsertTickets(Mockito.any(
-        Tickets.class));
-  }
-
-  @Test
-  void カルテの登録メソッドをRecordServiceから呼び出しjson形式でリクエストを受け取りユーザーに作成完了のメッセージを返す()
-      throws Exception {
-    TrainingRecord newTrainingRecord = new TrainingRecord(1, "090-1234-5678", LocalDate.now(),
-        "トレーニング内容", "テスト");
-
-    Mockito.doNothing().when(recordService).searchInsertRecord(newTrainingRecord);
-
-    mockMvc.perform(post("/userRecord")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(newTrainingRecord)))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string("新しいカルテ情報が作成されました"));
-  }
-
-  @Test
-  void 会員情報更新メソッドをチケットユーザーサービスから呼び出せる() throws Exception {
-    String massage = "会員情報の更新が完了しました";
-
-    User user = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
-        LocalDate.now());
-
-    Mockito.doNothing().when(ticketUserService).searchUpdateUser(user);
-
-    String jsonRequest = objectMapper.writeValueAsString(user);
-
-    mockMvc.perform(put("/updateUser")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jsonRequest))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string(massage));
-
-    Mockito.verify(ticketUserService, Mockito.times(1)).searchUpdateUser(Mockito.any(User.class));
-  }
-
-  @Test
-  void 回数券更新メソッドをチケットサービスから呼び出せる() throws Exception {
-    String massage = "回数券の更新が完了しました";
-    Tickets updateTickets = new Tickets(1, "090-1234-5678", 1, LocalDate.now(), "テスト",
-        "テスト");
-
-    Mockito.doNothing().when(ticketsService).searchUpdateTickets(updateTickets);
-
-    String jsonRequest = objectMapper.writeValueAsString(updateTickets);
-
-    mockMvc.perform(put("/updateTickets")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jsonRequest))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string(massage));
-
-    Mockito.verify(ticketsService, Mockito.times(1))
-        .searchUpdateTickets(Mockito.any(Tickets.class));
-  }
-
-  @Test
-  void 会員情報削除メソッドをユーザーサービスから呼び出せる() throws Exception {
-    String massage = "会員情報の削除が完了しました";
-    User deleteUser = new User("090-1234-5678", "テスト", "test@gmail.com", 1,
-        LocalDate.now());
-
-    Mockito.doNothing().when(ticketUserService).deleteUserInfo(deleteUser);
-
-    String jsonRequest = objectMapper.writeValueAsString(deleteUser);
-
-    mockMvc.perform(delete("/deleteUserInfo")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(jsonRequest))
-        .andExpect(status().isOk())
-        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
-        .andExpect(content().string(massage));
-
-    Mockito.verify(ticketUserService, Mockito.times(1)).deleteUserInfo(Mockito.any(User.class));
-  }
-
   /**
    * @return バリデーションエラーにならないユーザー情報
    */
@@ -224,6 +84,126 @@ class TicketControllerTest {
    */
   private Tickets createValidTickets() {
     return new Tickets(1, "090-1234-5678", 1, LocalDate.now(), "テスト", "テスト回数券");
+  }
+
+  /**
+   * @return バリデーションエラーにならないカルテ情報
+   */
+  private TrainingRecord createValidTrainingRecord() {
+    return new TrainingRecord(1, "090-1234-5678", LocalDate.now(), "テスト", "テスト");
+  }
+
+  @Test
+  void ユーザー情報とそのユーザーに紐づく回数券情報を持つuserInfoListメソッドをコンバーターサービスから呼び出しリスト型のUserInfoオブジェクトをjson形式でユーザーに返す()
+      throws Exception {
+    mockMvc.perform(get("/userList"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+    Mockito.verify(converterService, Mockito.times(1)).userInfoList();
+  }
+
+  @Test
+  void 名前で検索されたユーザー情報とそのユーザーに紐づく回数券情報を持つselectUserInfoメソッドをコンバーターサービスから呼び出しリスト型のUserInfoオブジェクトをjson形式でユーザーに返す()
+      throws Exception {
+    mockMvc.perform(get("/userList")
+            .param("name", "テスト"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+    Mockito.verify(converterService, Mockito.times(1)).selectUserInfo("テスト");
+  }
+
+  @Test
+  void 会員登録ができるsearchInsertUserメソッドをTicketUserServiceから呼び出しUserオブジェクトをjson形式でリクエストを受け取りユーザーに登録完了のメッセージを返す()
+      throws Exception {
+    Mockito.doNothing().when(ticketUserService).newInsertUser(createValidUser());
+
+    mockMvc.perform(post("/newUser")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidUser())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("ユーザー情報の登録が完了しました"));
+
+    Mockito.verify(ticketUserService, Mockito.times(1)).newInsertUser(Mockito.any(User.class));
+  }
+
+  @Test
+  void 回数券登録ができるsearchInsertTicketsメソッドをTicketsServiceから呼び出しTicketsオブジェクトjson形式でリクエストを受け取りユーザーに登録完了のメッセージを返す()
+      throws Exception {
+    Mockito.doNothing().when(ticketsService).searchInsertTickets(createValidTickets());
+
+    mockMvc.perform(post("/newTickets")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidTickets())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("回数券情報の登録が完了しました"));
+
+    Mockito.verify(ticketsService, Mockito.times(1)).searchInsertTickets(Mockito.any(
+        Tickets.class));
+  }
+
+  @Test
+  void カルテの登録ができるsearchInsertRecordメソッドをRecordServiceから呼び出しTrainingRecordオブジェクトをjson形式でリクエストを受け取りユーザーに作成完了のメッセージを返す()
+      throws Exception {
+    Mockito.doNothing().when(recordService).searchInsertRecord(createValidTrainingRecord());
+
+    mockMvc.perform(post("/userRecord")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidTrainingRecord())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("新しいカルテ情報が作成されました"));
+
+    Mockito.verify(recordService, Mockito.times(1))
+        .searchInsertRecord(Mockito.any(TrainingRecord.class));
+  }
+
+  @Test
+  void ユーザー情報の更新が可能なメソッドsearchUpdateUserをTicketUserServiceから呼び出だしUserオブジェクトをjson形式でリクエストを受け取りユーザーに更新完了のメッセージを返す()
+      throws Exception {
+    Mockito.doNothing().when(ticketUserService).searchUpdateUser(createValidUser());
+
+    mockMvc.perform(put("/updateUser")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidUser())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("ユーザー情報の更新が完了しました"));
+
+    Mockito.verify(ticketUserService, Mockito.times(1)).searchUpdateUser(Mockito.any(User.class));
+  }
+
+  @Test
+  void 回数券更新の更新が可能なメソッドsearchUpdateTicketsをTicketsServiceから呼び出しTicketsオブジェクトをjson形式でリクエストを受け取りユーザーに更新完了のメッセージを返す()
+      throws Exception {
+    Mockito.doNothing().when(ticketsService).searchUpdateTickets(createValidTickets());
+
+    mockMvc.perform(put("/updateTickets")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidTickets())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("回数券情報の更新が完了しました"));
+
+    Mockito.verify(ticketsService, Mockito.times(1))
+        .searchUpdateTickets(Mockito.any(Tickets.class));
+  }
+
+  @Test
+  void 会員情報の一括削除が可能なメソッドdeleteUserInfoをTicketUserServiceから呼び出だしUserオブジェクトをjson形式でリクエストを受け取りユーザーに削除完了のメッセージを返す() throws Exception {
+    Mockito.doNothing().when(ticketUserService).deleteUserInfo(createValidUser());
+
+    mockMvc.perform(delete("/deleteUserInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(createValidUser())))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+        .andExpect(content().string("ユーザー情報の削除が完了しました"));
+
+    Mockito.verify(ticketUserService, Mockito.times(1)).deleteUserInfo(Mockito.any(User.class));
   }
 
   /**
