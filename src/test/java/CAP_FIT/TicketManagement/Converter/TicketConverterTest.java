@@ -25,7 +25,7 @@ class TicketConverterTest {
   }
 
   @Test
-  void Dataパッケージの全クラスのリストが正しくidでマッピングされているか() {
+  void TicketsクラスとUserクラスのリストが正しくidでマッピングされているか() {
     List<User> userList = new ArrayList<>();
     userList.add(user);
 
@@ -41,7 +41,7 @@ class TicketConverterTest {
   }
 
   @Test
-  void 回数券を持っていない会員は会員情報のみ取得できる() {
+  void 回数券情報を持っていないユーザーはユーザー情報のみ取得できる() {
     List<User> userList = new ArrayList<>();
     userList.add(user2);
 

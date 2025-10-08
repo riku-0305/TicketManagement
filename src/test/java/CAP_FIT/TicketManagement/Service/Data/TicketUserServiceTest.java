@@ -29,8 +29,12 @@ class TicketUserServiceTest {
     sut = new TicketUserService(ticketRepository);
   }
 
+  private User createValidUser() {
+    return new User("090-1234-5678", "テストセイコウ", "test@gmail.com", 1, LocalDate.now());
+  }
+
   @Test
-  void リポジトリから会員情報の全件取得ができるメソッドを呼び出せる() {
+  void TicketRepositoryからユーザー情報の全件取得ができるuserListメソッドを呼び出せる() {
     List<User> userList = new ArrayList<>();
 
     Mockito.when(ticketRepository.userList()).thenReturn(userList);
@@ -41,11 +45,11 @@ class TicketUserServiceTest {
   }
 
   @Test
-  void リポジトリから名前に紐づく会員を取得できるメソッドを呼び出せる() {
-    String name = "テスト";
+  void TicketRepositoryから名前に紐づくユーザー情報を取得できるselectUserListメソッドを呼び出せる() {
+    String name = "テストセイコウ";
 
     List<User> userList = new ArrayList<>();
-    userList.add(new User("090-1234-5678","テスト"));
+    userList.add(createValidUser());
 
     Mockito.when(ticketRepository.selectUserList(name)).thenReturn(userList);
 
@@ -57,7 +61,7 @@ class TicketUserServiceTest {
   }
 
   @Test
-  void リポジトリから名前に紐づく会員が取得できなかった際に例外を返す() {
+  void TicketRepositoryから名前に紐づくユーザー情報selectUserListが取得できなかった際に例外を返す() {
     String name = "テスト";
 
     Mockito.when(ticketRepository.selectUserList(name)).thenReturn(new ArrayList<>());
@@ -69,38 +73,33 @@ class TicketUserServiceTest {
     Assertions.assertEquals(name + "さんは登録されていません", actual.getMessage());
   }
 
-
   @Test
   void リポジトリクラスから会員登録メソッドが呼び出せる() {
-    User user = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+    sut.newInsertUser(createValidUser());
 
-    Mockito.doNothing().when(ticketRepository).insertUser(user);
-
-    sut.newInsertUser(user);
-
-    Mockito.verify(ticketRepository,Mockito.times(1)).insertUser(user);
+    Mockito.verify(ticketRepository,Mockito.times(1)).insertUser(Mockito.any(User.class));
   }
 
   @Test
-  void 会員登録時に既存の会員IDと重複していれば例外を返す() {
+  void ユーザー情報の登録時に既存のユーザーリストのidと重複していれば例外を返す() {
     List<User> userList = new ArrayList<>();
     userList.add(new User("090-1234-5678"));
 
-    User user = new User("090-1234-5678");
+    User updateUser = new User("090-1234-5678");
 
     Mockito.when(ticketRepository.userList()).thenReturn(userList);
 
     DuplicateKeyException actual = Assertions.assertThrows(DuplicateKeyException.class, () -> {
-      sut.newInsertUser(user);
+      sut.newInsertUser(updateUser);
     });
 
-    Assertions.assertEquals("会員番号 " + user.getId() + " はすでに存在しています", actual.getMessage());
+    Assertions.assertEquals("会員番号 " + updateUser.getId() + " はすでに存在しています", actual.getMessage());
   }
 
   @Test
-  void リポジトリから会員更新メソッドが呼び出せる() {
+  void TicketRepositoryからユーザー情報の更新ができるupdateUserメソッドが呼び出せる() {
     List<User> userList = new ArrayList<>();
-    userList.add(new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10)));
+    userList.add(createValidUser());
 
     User user = new User("090-1234-5678", "テスト1","test@gmail.com", 10000, LocalDate.of(2025,9,10));
 
@@ -113,25 +112,24 @@ class TicketUserServiceTest {
   }
 
   @Test
-  void 会員情報更新時に存在しないIDの場合は例外を返す() {
+  void ユーザー情報の更新時に存在しないIDの場合は例外を返す() {
     List<User> userList = new ArrayList<>();
-    userList.add(new User("080-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10)));
+    userList.add(createValidUser());
 
-    User user = new User("090-1234-5678", "テスト1","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+    User updateUser = new User("080-1234-5678", "テストセイコウ","test@gmail.com", 10000, LocalDate.of(2025,9,10));
 
     Mockito.when(ticketRepository.userList()).thenReturn(userList);
 
     UserNotFoundException actual = Assertions.assertThrows(UserNotFoundException.class, () -> {
-      sut.searchUpdateUser(user);
+      sut.searchUpdateUser(updateUser);
     });
 
-   Assertions.assertEquals("会員番号　" + user.getId() + " は存在しません", actual.getMessage());
+   Assertions.assertEquals("会員番号　" + updateUser.getId() + " は存在しません", actual.getMessage());
   }
 
   @Test
-  void リポジトリから会員削除メソッドを呼び出せる() {
-    User deleteUser = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
-
+  void TicketRepositoryからユーザー情報及びそのユーザーに紐づく回数券情報の削除が可能なメソッドをdeleteUserとdeleteTicketsが呼び出せる() {
+    User deleteUser = createValidUser();
     Mockito.when(ticketRepository.deleteUser(deleteUser)).thenReturn(1);
     Mockito.doNothing().when(ticketRepository).deleteTickets(deleteUser.getId());
 
@@ -142,8 +140,8 @@ class TicketUserServiceTest {
   }
 
   @Test
-  void 会員削除時に会員が存在しなければ例外を返す() {
-    User deleteUser = new User("090-1234-5678", "テスト","test@gmail.com", 10000, LocalDate.of(2025,9,10));
+  void ユーザー情報の削除時に指定されたユーザーが存在しなければ例外を返す() {
+    User deleteUser = createValidUser();
 
     Mockito.when(ticketRepository.deleteUser(deleteUser)).thenReturn(0);
 
