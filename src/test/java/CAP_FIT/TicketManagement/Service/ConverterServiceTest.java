@@ -35,7 +35,7 @@ class ConverterServiceTest {
   }
 
   @Test
-  void データパッケージの各サービスクラスの全件取得とチケットコンバーターを呼び出せる() {
+  void TicketsServiceとTicketUserServiceからユーザー情報と回数券情報を全件取得しTicketConverterのconvertUserInfoListを呼び出し引数として渡せる() {
     List<User> userList = new ArrayList<>();
     List<Tickets> ticketsList = new ArrayList<>();
     List<UserInfo> userInfoList = new ArrayList<>();
@@ -52,7 +52,7 @@ class ConverterServiceTest {
   }
 
   @Test
-  void チケットユーザーサービスのみ名前に紐づく会員の取得ができるメソッドを呼び出せて他のサービスクラスの全件取得とチケットコンバーターを呼び出せる() {
+  void TicketUserServiceの名前に紐づくユーザーの取得ができるsearchSelectUserListメソッドを呼び出し全件取得した回数券情報searchTicketsListとTicketConverterのconvertUserInfoListに引数として渡せる() {
     String name = "テスト";
     List<User> userList = new ArrayList<>();
     List<Tickets> ticketsList = new ArrayList<>();

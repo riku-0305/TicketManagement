@@ -21,7 +21,7 @@ class TicketJudgmentTest {
   }
 
   @Test
-  void 会員リストのIDにマッチする回数券のユーザーIDがあれば回数券を返す() {
+  void 引数で渡されたユーザー情報リストのidにマッチする回数券情報のuserIdがあれば引数で渡された回数券情報を呼び出し元に返す() {
     List<User> userList = new ArrayList<>();
     userList.add(user);
 
@@ -33,7 +33,7 @@ class TicketJudgmentTest {
   }
 
   @Test
-  void 会員リストのIDにマッチする回数券のユーザーIDがなければ例外を返す() {
+  void 引数で渡されたユーザー情報リストのidにマッチする回数券情報のuserIdがなければ例外メッセージをユーザーに返す() {
     List<User> userList = new ArrayList<>();
     userList.add(user);
 
