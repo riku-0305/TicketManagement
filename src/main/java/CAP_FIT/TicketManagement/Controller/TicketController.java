@@ -61,7 +61,7 @@ public class TicketController {
    */
   @PostMapping("/newUser")
   public ResponseEntity<String> newUser(@RequestBody @Valid User user) {
-    ticketUserService.newInsertUser(user);
+    ticketUserService.searchInsertUser(user);
     return ResponseEntity.ok("ユーザー情報の登録が完了しました");
   }
 

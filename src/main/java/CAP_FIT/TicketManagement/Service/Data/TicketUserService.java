@@ -49,7 +49,7 @@ public class TicketUserService {
    * @param user 新規ユーザー情報
    */
   @Transactional
-  public void newInsertUser(User user) {
+  public void searchInsertUser(User user) {
     List<User> userList = ticketRepository.userList();
     for (User users : userList) {
       if (users.getId().equals(user.getId())) {
