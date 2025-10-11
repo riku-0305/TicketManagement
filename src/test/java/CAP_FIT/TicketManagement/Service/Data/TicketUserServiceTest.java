@@ -1,6 +1,5 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
-import CAP_FIT.TicketManagement.Data.Tickets;
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
@@ -75,7 +74,7 @@ class TicketUserServiceTest {
 
   @Test
   void リポジトリクラスから会員登録メソッドが呼び出せる() {
-    sut.newInsertUser(createValidUser());
+    sut.searchInsertUser(createValidUser());
 
     Mockito.verify(ticketRepository,Mockito.times(1)).insertUser(Mockito.any(User.class));
   }
@@ -90,7 +89,7 @@ class TicketUserServiceTest {
     Mockito.when(ticketRepository.userList()).thenReturn(userList);
 
     DuplicateKeyException actual = Assertions.assertThrows(DuplicateKeyException.class, () -> {
-      sut.newInsertUser(updateUser);
+      sut.searchInsertUser(updateUser);
     });
 
     Assertions.assertEquals("会員番号 " + updateUser.getId() + " はすでに存在しています", actual.getMessage());

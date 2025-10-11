@@ -117,7 +117,7 @@ class TicketControllerTest {
   @Test
   void 会員登録ができるsearchInsertUserメソッドをTicketUserServiceから呼び出しUserオブジェクトをjson形式でリクエストを受け取りユーザーに登録完了のメッセージを返す()
       throws Exception {
-    Mockito.doNothing().when(ticketUserService).newInsertUser(createValidUser());
+    Mockito.doNothing().when(ticketUserService).searchInsertUser(createValidUser());
 
     mockMvc.perform(post("/newUser")
             .contentType(MediaType.APPLICATION_JSON)
@@ -126,7 +126,7 @@ class TicketControllerTest {
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
         .andExpect(content().string("ユーザー情報の登録が完了しました"));
 
-    Mockito.verify(ticketUserService, Mockito.times(1)).newInsertUser(Mockito.any(User.class));
+    Mockito.verify(ticketUserService, Mockito.times(1)).searchInsertUser(Mockito.any(User.class));
   }
 
   @Test

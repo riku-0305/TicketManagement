@@ -15,3 +15,12 @@ CREATE TABLE tickets (
   ticket_name varchar(30) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES gym_user (id)
 );
+
+CREATE TABLE record (
+   record_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   user_id  varchar(20) NOT NULL,
+   training_memory date NOT NULL,
+   training_memo text,
+   user_name varchar(30) NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES gym_user (id)
+);
