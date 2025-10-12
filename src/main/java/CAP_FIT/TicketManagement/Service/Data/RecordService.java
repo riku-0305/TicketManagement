@@ -15,6 +15,10 @@ public class RecordService {
     this.recordRepository = recordRepository;
   }
 
+  /**
+   * 新規カルテ情報の登録が可能でrecordRepositoryからinsertRecordメソッドを呼び出す
+   * @param trainingRecord 新規カルテ情報
+   */
   public void searchInsertRecord(TrainingRecord trainingRecord) {
     recordRepository.insertRecord(trainingRecord);
   }

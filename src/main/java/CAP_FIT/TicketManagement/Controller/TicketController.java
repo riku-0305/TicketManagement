@@ -109,6 +109,11 @@ public class TicketController {
    return ResponseEntity.ok("ユーザー情報の削除が完了しました");
   }
 
+  /**
+   * ユーザーの新規カルテ情報の登録が可能
+   * @param trainingRecord 新規カルテ情報
+   * @return 登録完了メッセ―ジ
+   */
   @PostMapping("/userRecord")
   public ResponseEntity<String> userRecord(@RequestBody TrainingRecord trainingRecord) {
    recordService.searchInsertRecord(trainingRecord);
