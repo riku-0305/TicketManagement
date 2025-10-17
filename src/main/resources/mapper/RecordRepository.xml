@@ -7,5 +7,9 @@
     VALUES (#{userId}, #{trainingMemory}, #{trainingMemo}, #{userName});
   </insert>
 
+  <select id="selectRecordList" resultType="CAP_FIT.TicketManagement.Data.TrainingRecord">
+    SELECT * FROM record WHERE user_id = #{userId}
+  </select>
+
 </mapper>
 

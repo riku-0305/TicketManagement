@@ -55,6 +55,17 @@ public class TicketController {
   }
 
   /**
+   * ユーザーidで指定したユーザーが持つカルテ情報リストを取得できる
+   * @param userId ユーザーid
+   * @return idで指定されたユーザーのカルテ情報リスト
+   */
+  @GetMapping("selectUserTrainingRecord")
+  public List<TrainingRecord> getSelectUserTrainingRecord(
+      @RequestParam (name = "userId", required = true) String userId) {
+  return recordService.selectRecordList(userId);
+  }
+
+  /**
    * 新規ユーザー情報の登録が可能
    * @param user ユーザー情報
    * @return 登録完了メッセージ
@@ -74,6 +85,17 @@ public class TicketController {
   public ResponseEntity<String> newNominationTicket(@RequestBody @Valid Tickets tickets) {
     ticketsService.searchInsertTickets(tickets);
     return ResponseEntity.ok("回数券情報の登録が完了しました");
+  }
+
+  /**
+   * ユーザーの新規カルテ情報の登録が可能
+   * @param trainingRecord 新規カルテ情報
+   * @return 登録完了メッセ―ジ
+   */
+  @PostMapping("/userRecord")
+  public ResponseEntity<String> userRecord(@RequestBody TrainingRecord trainingRecord) {
+    recordService.searchInsertRecord(trainingRecord);
+    return ResponseEntity.ok("新しいカルテ情報が作成されました");
   }
 
   /**
@@ -107,16 +129,5 @@ public class TicketController {
   public ResponseEntity<String> deleteUserInfo(@RequestBody @Valid User user) {
    ticketUserService.deleteUserInfo(user);
    return ResponseEntity.ok("ユーザー情報の削除が完了しました");
-  }
-
-  /**
-   * ユーザーの新規カルテ情報の登録が可能
-   * @param trainingRecord 新規カルテ情報
-   * @return 登録完了メッセ―ジ
-   */
-  @PostMapping("/userRecord")
-  public ResponseEntity<String> userRecord(@RequestBody TrainingRecord trainingRecord) {
-   recordService.searchInsertRecord(trainingRecord);
-   return ResponseEntity.ok("新しいカルテ情報が作成されました");
   }
 }
