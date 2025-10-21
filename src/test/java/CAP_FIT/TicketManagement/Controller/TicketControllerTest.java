@@ -115,6 +115,17 @@ class TicketControllerTest {
   }
 
   @Test
+  void ユーザーidで検索されたユーザーのカルテ情報を持つselectRecordListメソッドをRecordServiceから呼び出してリスト型のTrainingRecordオブジェクトをjson形式でユーザーに返す()
+      throws Exception {
+    mockMvc.perform(get("/selectUserTrainingRecord")
+        .param("userId", "090-1234-5678"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+    Mockito.verify(recordService, Mockito.times(1)).selectRecordList("090-1234-5678");
+  }
+
+  @Test
   void 会員登録ができるsearchInsertUserメソッドをTicketUserServiceから呼び出しUserオブジェクトをjson形式でリクエストを受け取りユーザーに登録完了のメッセージを返す()
       throws Exception {
     Mockito.doNothing().when(ticketUserService).searchInsertUser(createValidUser());
