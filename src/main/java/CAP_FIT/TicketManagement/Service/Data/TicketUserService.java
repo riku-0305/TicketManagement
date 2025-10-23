@@ -3,6 +3,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
+import CAP_FIT.TicketManagement.Repository.RecordRepository;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketUserService {
 
   private final TicketRepository ticketRepository;
+  private final RecordRepository recordRepository;
 
   @Autowired
-  public TicketUserService(TicketRepository ticketRepository) {
+  public TicketUserService(TicketRepository ticketRepository, RecordRepository recordRepository) {
     this.ticketRepository = ticketRepository;
+    this.recordRepository = recordRepository;
   }
 
   /**
@@ -97,6 +100,7 @@ public class TicketUserService {
   public void deleteUserInfo(User user) {
     String id = user.getId();
     ticketRepository.deleteTickets(id);
+    recordRepository.deleteRecord(id);
 
     searchDeleteUser(user);
   }

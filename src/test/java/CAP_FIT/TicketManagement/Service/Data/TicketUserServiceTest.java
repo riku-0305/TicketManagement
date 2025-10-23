@@ -2,6 +2,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
+import CAP_FIT.TicketManagement.Repository.RecordRepository;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,11 +22,14 @@ class TicketUserServiceTest {
   @Mock
   private TicketRepository ticketRepository;
 
+  @Mock
+  private RecordRepository recordRepository;
+
   private TicketUserService sut;
 
   @BeforeEach
   void before() {
-    sut = new TicketUserService(ticketRepository);
+    sut = new TicketUserService(ticketRepository, recordRepository);
   }
 
   private User createValidUser() {
@@ -131,11 +135,13 @@ class TicketUserServiceTest {
     User deleteUser = createValidUser();
     Mockito.when(ticketRepository.deleteUser(deleteUser)).thenReturn(1);
     Mockito.doNothing().when(ticketRepository).deleteTickets(deleteUser.getId());
+    Mockito.doNothing().when(recordRepository).deleteRecord(deleteUser.getId());
 
     sut.deleteUserInfo(deleteUser);
 
     Mockito.verify(ticketRepository,Mockito.times(1)).deleteUser(deleteUser);
     Mockito.verify(ticketRepository,Mockito.times(1)).deleteTickets(deleteUser.getId());
+    Mockito.verify(recordRepository,Mockito.times(1)).deleteRecord(deleteUser.getId());
   }
 
   @Test
