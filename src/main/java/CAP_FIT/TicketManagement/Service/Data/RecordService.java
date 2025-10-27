@@ -2,6 +2,7 @@ package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.TrainingRecord;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
+import CAP_FIT.TicketManagement.Judgment.Judgment;
 import CAP_FIT.TicketManagement.Repository.RecordRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 public class RecordService {
 
   private final RecordRepository recordRepository;
+  private final Judgment judgment;
 
   @Autowired
-  public RecordService(RecordRepository recordRepository) {
+  public RecordService(RecordRepository recordRepository, Judgment judgment) {
     this.recordRepository = recordRepository;
+    this.judgment = judgment;
   }
 
   /**
@@ -23,6 +26,8 @@ public class RecordService {
    * @param trainingRecord 新規カルテ情報
    */
   public void searchInsertRecord(TrainingRecord trainingRecord) {
+    String trainingRecordUserId = trainingRecord.getUserId();
+    boolean resultRecord = judgment.insertJudgment(trainingRecordUserId);
     recordRepository.insertRecord(trainingRecord);
   }
 

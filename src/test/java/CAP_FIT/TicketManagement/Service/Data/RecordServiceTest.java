@@ -1,8 +1,7 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import CAP_FIT.TicketManagement.Data.TrainingRecord;
+import CAP_FIT.TicketManagement.Judgment.Judgment;
 import CAP_FIT.TicketManagement.Repository.RecordRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 
 @ExtendWith(MockitoExtension.class)
 class RecordServiceTest {
@@ -21,11 +19,14 @@ class RecordServiceTest {
   @Mock
   private RecordRepository recordRepository;
 
+  @Mock
+  private Judgment judgment;
+
   private RecordService sut;
 
   @BeforeEach
   void before() {
-    sut = new RecordService(recordRepository);
+    sut = new RecordService(recordRepository, judgment);
   }
 
   private TrainingRecord createValidTrainingRecord() {

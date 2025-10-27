@@ -1,14 +1,12 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.Tickets;
-import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
-import CAP_FIT.TicketManagement.Judgment.TicketJudgment;
+import CAP_FIT.TicketManagement.Judgment.Judgment;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.AbstractAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,13 +22,13 @@ class TicketsServiceTest {
   private TicketRepository ticketRepository;
 
   @Mock
-  private TicketJudgment ticketJudgment;
+  private Judgment judgment;
 
   private TicketsService sut;
 
   @BeforeEach
   void before() {
-    sut = new TicketsService(ticketRepository, ticketJudgment);
+    sut = new TicketsService(ticketRepository, judgment);
   }
 
   private Tickets createValidTickets() {
@@ -50,19 +48,13 @@ class TicketsServiceTest {
 
   @Test
   void TicketRepositoryから全件のユーザー情報を呼び出しTicketJudgmentから回数券情報の登録を判定するメソッドを呼び出すその後TicketRepositoryからinsertTicketsメソッドを呼び出し新しい回数券情報を渡す() {
-    List<User> userList = new ArrayList<>();
-    userList.add(new User("090-1234-5678"));
+    String insertId = createValidTickets().getUserId();
+    Mockito.when(judgment.insertJudgment(insertId)).thenReturn(
+        true);
 
-    Tickets tickets = createValidTickets();
+    sut.searchInsertTickets(createValidTickets());
 
-    Mockito.when(ticketRepository.userList()).thenReturn(userList);
-    Mockito.when(ticketJudgment.insertJudgmentTickets(userList, tickets)).thenReturn(
-        tickets);
-
-    sut.searchInsertTickets(tickets);
-
-    Mockito.verify(ticketRepository, Mockito.times(1)).userList();
-    Mockito.verify(ticketJudgment, Mockito.times(1)).insertJudgmentTickets(userList, tickets);
+    Mockito.verify(judgment, Mockito.times(1)).insertJudgment(insertId);
     Mockito.verify(ticketRepository, Mockito.times(1)).insertTickets(Mockito.any(Tickets.class));
   }
 
