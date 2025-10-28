@@ -1,9 +1,8 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.Tickets;
-import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
-import CAP_FIT.TicketManagement.Judgment.TicketJudgment;
+import CAP_FIT.TicketManagement.Judgment.Judgment;
 import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketsService {
 
   private final TicketRepository ticketRepository;
-  private final TicketJudgment ticketJudgment;
+  private final Judgment judgment;
 
   @Autowired
-  public TicketsService(TicketRepository ticketRepository, TicketJudgment ticketJudgment) {
+  public TicketsService(TicketRepository ticketRepository, Judgment judgment) {
     this.ticketRepository = ticketRepository;
-    this.ticketJudgment = ticketJudgment;
+    this.judgment = judgment;
   }
 
   /**
@@ -37,9 +36,9 @@ public class TicketsService {
    */
   @Transactional
   public void searchInsertTickets(Tickets tickets) {
-    List<User> userList = ticketRepository.userList();
-    Tickets resultTickets = ticketJudgment.insertJudgmentTickets(userList, tickets);
-    ticketRepository.insertTickets(resultTickets);
+    String ticketsUserId = tickets.getUserId();
+    boolean resultTickets = judgment.insertJudgment(ticketsUserId);
+    ticketRepository.insertTickets(tickets);
   }
 
   /**
