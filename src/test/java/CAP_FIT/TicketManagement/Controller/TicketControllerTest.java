@@ -118,7 +118,7 @@ class TicketControllerTest {
   void ユーザーidで検索されたユーザーのカルテ情報を持つselectRecordListメソッドをRecordServiceから呼び出してリスト型のTrainingRecordオブジェクトをjson形式でユーザーに返す()
       throws Exception {
     mockMvc.perform(get("/selectUserTrainingRecord")
-        .param("userId", "090-1234-5678"))
+            .param("userId", "090-1234-5678"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
@@ -351,6 +351,54 @@ class TicketControllerTest {
     }
 
     Set<ConstraintViolation<Tickets>> violations = validator.validate(incompleteTickets);
+    assertViolationMessage(violations, expectedErrorMassage);
+  }
+
+  /**
+   *  TrainingRecordフィールドの各フィールド、バリデーションエラーが発生する値、バリデーションエラーメッセージを設定
+   * @return フィールド名、バリデーションエラーが発生する値、バリデーションエラーメッセージリスト
+   */
+  static Stream<Arguments> invalidTrainingRecordDate() {
+    return Stream.of(
+
+        Arguments.of("recordId", 0, List.of("1以上の整数値を入力してください")),
+
+        Arguments.of("userId", null, List.of("ユーザーidの入力は必須です。")),
+        Arguments.of("userId", "abc", List.of("携帯番号をハイフン付きで入力してください。")),
+
+        Arguments.of("trainingMemory", null, List.of("購入日の入力は必須です。")),
+
+        Arguments.of("userName", null, List.of("ユーザー名の入力は必須です。")),
+        Arguments.of("userName", "てすと", List.of("カタカナのみ入力できます。"))
+    );
+  }
+
+  /**
+   * TrainingRecordクラスの各フィールドにエラーが発生しない値(createValidTickets())をincompleteTrainingRecordに代入
+   * 条件分岐で指定したフィールドのみバリデーションエラーが発生するようにincompleteTrainingRecordクに値をセット
+   * これにより全てのフィールドのバリデーションエラーを1回ずつ検証が可能
+   * @param targetField TrainingRecordクラスのフィールド
+   * @param inputValue バリデーションエラーが発生する値
+   * @param expectedErrorMassage 期待されるバリデーションエラーのメッセージリスト
+   */
+  @ParameterizedTest
+  @MethodSource("invalidTrainingRecordDate")
+  void TrainingRecordクラスのバリデーションエラーを全て返す(String targetField, Object inputValue,
+      List<String> expectedErrorMassage) {
+
+    TrainingRecord incompleteTrainingRecord = createValidTrainingRecord();
+
+    if ("recordId".equals(targetField)) {
+      incompleteTrainingRecord.setRecordId((int) inputValue);
+    } else if ("userId".equals(targetField)) {
+      incompleteTrainingRecord.setUserId((String) inputValue);
+    } else if ("trainingMemory".equals(targetField)) {
+      incompleteTrainingRecord.setTrainingMemory((LocalDate) inputValue);
+    } else if ("userName".equals(targetField)) {
+      incompleteTrainingRecord.setUserName((String) inputValue);
+    }
+
+    Set<ConstraintViolation<TrainingRecord>> violations = validator.validate(incompleteTrainingRecord);
     assertViolationMessage(violations, expectedErrorMassage);
   }
 }
