@@ -20,6 +20,9 @@ public interface RecordRepository {
    */
   List<TrainingRecord> selectRecordList(String userId);
 
+
+   int updateRecord(TrainingRecord trainingRecord);
+
   /**
    * ユーザーidで指定されたユーザーのカルテ情報の削除が可能
    * @param id ユーザーid

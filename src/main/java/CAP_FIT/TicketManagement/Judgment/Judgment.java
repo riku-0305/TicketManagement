@@ -32,5 +32,17 @@ public class Judgment {
       throw new UserNotFoundException("会員ID " + userId + " の会員は見つかりません");
     }
   }
+
+  public boolean nameJudgment(String name) {
+
+    boolean userExists = ticketRepository.userList().stream()
+        .anyMatch(user -> user.getName().equals(name));
+
+    if(userExists) {
+      return true;
+    } else {
+      throw new UserNotFoundException("ユーザーネーム" + name + "さんは見つかりませんでした");
+    }
+  }
 }
 

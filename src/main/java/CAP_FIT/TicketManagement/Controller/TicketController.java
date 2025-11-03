@@ -120,6 +120,12 @@ public class TicketController {
     return ResponseEntity.ok("回数券情報の更新が完了しました");
   }
 
+  @PutMapping("/updateTrainingRecord")
+  public ResponseEntity<String> updateTrainingRecord(@RequestBody @Valid TrainingRecord trainingRecord) {
+     recordService.searchUpdateRecord(trainingRecord);
+     return ResponseEntity.ok("カルテ情報の更新が完了しました");
+  }
+
   /**
    * 既存ユーザーの情報とそのユーザーに紐づく回数券情報の一括削除
    * @param user ユーザー情報
