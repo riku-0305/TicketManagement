@@ -1,9 +1,11 @@
 package CAP_FIT.TicketManagement.Service.Data;
 
 import CAP_FIT.TicketManagement.Data.TrainingRecord;
+import CAP_FIT.TicketManagement.Data.User;
 import CAP_FIT.TicketManagement.Exception.UserNotFoundException;
 import CAP_FIT.TicketManagement.Judgment.Judgment;
 import CAP_FIT.TicketManagement.Repository.RecordRepository;
+import CAP_FIT.TicketManagement.Repository.TicketRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,8 @@ public class RecordService {
    */
   public void searchInsertRecord(TrainingRecord trainingRecord) {
     String trainingRecordUserId = trainingRecord.getUserId();
-    boolean resultRecord = judgment.insertJudgment(trainingRecordUserId);
+    boolean idResultRecord = judgment.insertJudgment(trainingRecordUserId);
+    boolean nameResultRecord = judgment.nameJudgment(trainingRecord.getUserName());
     recordRepository.insertRecord(trainingRecord);
   }
 
@@ -43,5 +46,16 @@ public class RecordService {
     if(selectRecordList.isEmpty()) {
       throw new UserNotFoundException("ユーザー番号　" + userId + " は存在しません");
     } return selectRecordList;
+  }
+
+  public void searchUpdateRecord(TrainingRecord trainingRecord) {
+    boolean judgmentUserId = judgment.insertJudgment(trainingRecord.getUserId());
+    boolean judgmentUserName = judgment.nameJudgment(trainingRecord.getUserName());
+
+    int resultTrainingRecord = recordRepository.updateRecord(trainingRecord);
+
+    if(resultTrainingRecord == 0) {
+      throw new UserNotFoundException("カルテ番号" + trainingRecord.getRecordId() + "は存在しません");
+    }
   }
 }
